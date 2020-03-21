@@ -1,5 +1,7 @@
 package com.example.Aapi.controller;
 
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,14 @@ public class BlobJController {
 	@GetMapping("all")
 	public Page<BlobJ> retrieveAllBlobJs(@RequestParam(name="pageNumber", required = true ) final Integer pageNumber) {
 		
-		return blobJService.retireveAllBlobJs(pageNumber);
+		return blobJService.retrieveAllBlobJs(pageNumber);
+	}
+	
+	@GetMapping("byId")
+	public Optional<BlobJ> retrieveById(@RequestParam(name="id", required = true ) final Long id) {
+		
+		Optional<BlobJ> blobJToRetrieve = blobJService.retrieveById(id);
+		
+		return blobJToRetrieve;
 	}
 }
