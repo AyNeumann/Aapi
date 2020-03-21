@@ -23,7 +23,7 @@ public class BlobJController {
 	private BlobJService blobJService;
 	
 	@PostMapping("create")
-	public void createBlob(@RequestBody final BlobJ blobj, final BindingResult bindingResult) {
+	public BlobJ createBlob(@RequestBody final BlobJ blobj, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a Blobj with invalid data";
@@ -32,7 +32,9 @@ public class BlobJController {
 			throw new IllegalArgumentException("Attempt to create a Blobj with invalid data");
 		}
 		
-		blobJService.createBlobj(blobj);
+		BlobJ savedBlobJ = blobJService.createBlobj(blobj);
+		
+		return savedBlobJ;
 	}
 
 }

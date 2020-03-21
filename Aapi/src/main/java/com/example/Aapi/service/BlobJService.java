@@ -16,8 +16,11 @@ public class BlobJService {
 	@Autowired
 	BlobJRepository blobJRepository;
 
-	public void createBlobj(final BlobJ blobj) {
-		blobJRepository.save(blobj);
+	public BlobJ createBlobj(final BlobJ blobj) {
+		
+		BlobJ savedBlob = blobJRepository.save(blobj);
+		
+		return savedBlob;
 	}
 
 }
