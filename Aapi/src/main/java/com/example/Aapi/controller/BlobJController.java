@@ -3,10 +3,13 @@ package com.example.Aapi.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Aapi.dto.BlobJ;
@@ -18,7 +21,7 @@ import com.example.Aapi.service.BlobJService;
  *
  */
 @RestController
-@RequestMapping("/blobj")
+@RequestMapping("/blobj/")
 public class BlobJController {
 	
 	/** Reference to the log4j logger. */
@@ -47,5 +50,15 @@ public class BlobJController {
 		
 		return savedBlobJ;
 	}
-
+	
+	/**
+	 * Retrieve all blob from the database and return paginated data - 50 blobJ/page
+	 * @param pageNumber number of the page requested - 0 base count
+	 * @return required page
+	 */
+	@GetMapping("all")
+	public Page<BlobJ> retrieveAllBlobJs(@RequestParam(name="pageNumber", required = true ) final Integer pageNumber) {
+		
+		return blobJService.retireveAllBlobJs(pageNumber);
+	}
 }
