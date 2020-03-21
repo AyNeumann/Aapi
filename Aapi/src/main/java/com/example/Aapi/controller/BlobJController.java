@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Aapi.service.BlobService;
+import com.example.Aapi.service.BlobJService;
 
 /**
  * Manage request about blob.
@@ -13,9 +13,9 @@ import com.example.Aapi.service.BlobService;
  */
 @RestController
 @RequestMapping("/user")
-public class BlobController {
+public class BlobJController {
 	
 	@Autowired
-	private BlobService blobService;
+	private BlobJService blobService;
 
 }

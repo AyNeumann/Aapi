@@ -3,7 +3,8 @@ package com.example.Aapi.dao;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.Aapi.dto.Blob;
+import com.example.Aapi.dto.BlobJ;
+
 
 /**
  * Blob repository
@@ -11,6 +12,6 @@ import com.example.Aapi.dto.Blob;
 
  */
 @Repository
-public interface BlobRepository extends CrudRepository<Blob, Long> {
+public interface BlobJRepository extends CrudRepository<BlobJ, Long> {
 
 }

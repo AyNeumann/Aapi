@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * @author Aymeric Neumann
  */
 @Entity
-public class Blob {
+public class BlobJ {
 	
 	/** Id of the blob.*/
 	@Id
