@@ -1,5 +1,7 @@
 package com.example.Aapi.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,20 +21,29 @@ import com.example.Aapi.service.BlobJService;
 @RequestMapping("/blobj")
 public class BlobJController {
 	
+	/** Reference to the log4j logger. */
+	private static final Logger LOG = LogManager.getLogger();
+	
+	/** Reference to BlobJService. */
 	@Autowired
 	private BlobJService blobJService;
 	
-	@PostMapping("create")
-	public BlobJ createBlob(@RequestBody final BlobJ blobj, final BindingResult bindingResult) {
+	/**
+	 * Create a blobj and return created blobj.
+	 * @param blobj blobj to create
+	 * @param bindingResult spring framework validation interface
+	 * @return the created blobj
+	 */
+	@PostMapping("save")
+	public BlobJ saveBlob(@RequestBody final BlobJ blobj, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a Blobj with invalid data";
-			// TODO setup logger
-			System.out.println(message);
+			LOG.warn(message);
 			throw new IllegalArgumentException("Attempt to create a Blobj with invalid data");
 		}
 		
-		BlobJ savedBlobJ = blobJService.createBlobj(blobj);
+		BlobJ savedBlobJ = blobJService.saveBlobj(blobj);
 		
 		return savedBlobJ;
 	}

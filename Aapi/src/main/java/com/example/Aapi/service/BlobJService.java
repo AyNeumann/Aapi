@@ -13,10 +13,16 @@ import com.example.Aapi.dto.BlobJ;
 @Service
 public class BlobJService {
 	
+	/** Reference to the BlobJRepository */
 	@Autowired
 	BlobJRepository blobJRepository;
 
-	public BlobJ createBlobj(final BlobJ blobj) {
+	/**
+	 * Save the blobJ in the database
+	 * @param blobj blobJ to save
+	 * @return savedBlobJ
+	 */
+	public BlobJ saveBlobj(final BlobJ blobj) {
 		
 		BlobJ savedBlob = blobJRepository.save(blobj);
 		
