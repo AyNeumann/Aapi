@@ -115,4 +115,24 @@ public class BlobJService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/**
+	 * Delete the blobJ with the matching type
+	 * @param id id of the BLobJ to delete
+	 * @return true if the BlobJ has been deleted
+	 */
+	public boolean deleteBlobJ(Long id) {
+		
+		boolean isDeleted = false;
+		
+		blobJRepository.deleteById(id);
+		
+		Optional<BlobJ> checkBlobJ = blobJRepository.findById(id);
+		
+		if(!checkBlobJ.isPresent()) {
+			isDeleted = true;
+		}
+		
+		return isDeleted;
+	}
 }
