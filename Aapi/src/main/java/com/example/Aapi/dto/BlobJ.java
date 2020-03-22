@@ -24,7 +24,11 @@ public class BlobJ {
     @NotBlank
     private String name;
     
-    /*
+    /** Blob count. */
+    @NotNull
+    private Integer count;
+    
+	/*
      * Override method toSTring
      */
     @Override
@@ -32,6 +36,7 @@ public class BlobJ {
         return "Blob{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", count='" + count + '\'' +
                 '}';
     }
 
@@ -54,6 +59,20 @@ public class BlobJ {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	/**
+	 * @return the count
+	 */
+	public Integer getCount() {
+		return count;
+	}
+
+	/**
+	 * @param count the count to set
+	 */
+	public void setCount(Integer count) {
+		this.count = count;
 	}
 
 }
