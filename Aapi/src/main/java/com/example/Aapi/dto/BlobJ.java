@@ -1,6 +1,8 @@
 package com.example.Aapi.dto;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Database entity for Blob
- * @author Aymeric Neumann
+ * @author Aymeric NEUMANN
  */
 @Entity
 public class BlobJ {
@@ -28,6 +30,11 @@ public class BlobJ {
     @NotNull
     private Integer count;
     
+    /** Blob type */
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private BlobJType type;
+    
 	/*
      * Override method toSTring
      */
@@ -37,6 +44,7 @@ public class BlobJ {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", count='" + count + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 
@@ -73,6 +81,20 @@ public class BlobJ {
 	 */
 	public void setCount(Integer count) {
 		this.count = count;
+	}
+	
+	/**
+	 * @return the type
+	 */
+	public BlobJType getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(BlobJType type) {
+		this.type = type;
 	}
 
 }

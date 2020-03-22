@@ -14,10 +14,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.Aapi.dao.BlobJRepository;
 import com.example.Aapi.dto.BlobJ;
+import com.example.Aapi.dto.BlobJType;
 
 /**
  * Service for Blob
- * @author Aymeric Neumann
+ * @author Aymeric NEUMANN
  */
 @Service
 public class BlobJService {
@@ -33,7 +34,7 @@ public class BlobJService {
 	BlobJRepository blobJRepository;
 
 	/**
-	 * Save the blobJ in the database
+	 * Save the blobJ in the database.
 	 * @param blobj blobJ to save
 	 * @return savedBlobJ - BlobJ
 	 */
@@ -45,7 +46,7 @@ public class BlobJService {
 	}
 
 	/**
-	 * Retrieve all BlobJ per page - 50 blobJ/page
+	 * Retrieve all BlobJ per page - 50 blobJ/page.
 	 * @param pageNumber number of the page requested - 0 base count
 	 * @return required page with 50 blobJ sorted by name - Page<BlobJ>
 	 */
@@ -58,7 +59,7 @@ public class BlobJService {
 	}
 
 	/**
-	 * Retrieve the BlobJ with the matching id
+	 * Retrieve the BlobJ with the matching id.
 	 * @param id id of the BlobJ to retrieve
 	 * @return found BlobJ - Optional<BlobJ>
 	 */
@@ -75,7 +76,7 @@ public class BlobJService {
 	}
 	
 	/**
-	 * Retrieve the BlobJswith a count equal or greater than minCount 
+	 * Retrieve the BlobJswith a count equal or greater than minCount.
 	 * @param minCount minimal Count requested
 	 * @return list of BlobJ with matching conditions -Set<BlobJ>
 	 */
@@ -87,7 +88,7 @@ public class BlobJService {
 	}
 	
 	/**
-	 * Retrieve the BlobJs with a name which contains the received name
+	 * Retrieve the BlobJs with a name which contains the received name.
 	 * @param name required name to find
 	 * @return a list of BlobJ with a name which contains the received name - Set<BlobJ>
 	 */
@@ -97,10 +98,21 @@ public class BlobJService {
 		
 		return blobJsToRetrieve;
 	}
+	
+	/**
+	 * Retrieve all BlobJs with a matching type.
+	 * @param type type of BlobJ to retrieve
+	 * @return all BlobJs with a matching type - Set<BlobJ>
+	 */
+	public Set<BlobJ> retrieveByType(BlobJType type) {
+		
+		Set<BlobJ> blobJsToRetrieve = blobJRepository.findByTypeOrderByNameAsc(type);
+		
+		return blobJsToRetrieve;
+	}
 
 	public void updateBlobJ(BlobJ blobj) {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

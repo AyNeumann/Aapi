@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Aapi.dto.BlobJ;
+import com.example.Aapi.dto.BlobJType;
 import com.example.Aapi.service.BlobJService;
 
 /**
  * Manage request about blob.
- * @author Aymeric Neumann
+ * @author Aymeric NEUMANN
  *
  */
 @RestController
@@ -55,7 +56,9 @@ public class BlobJController {
 	 */
 	@PostMapping("save")
 	public BlobJ saveBlob(@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
-				
+		
+		LOG.warn(blobj.toString());
+		
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a Blobj with invalid data";
 			LOG.warn(message);
@@ -68,7 +71,7 @@ public class BlobJController {
 	}
 	
 	/**
-	 * Retrieve all blob from the database and return paginated data - 50 blobJ/page
+	 * Retrieve all blob from the database and return paginated data - 50 blobJ/page.
 	 * @param pageNumber number of the page requested - 0 base count
 	 * @return required page of BlobJ - Page<BlobJ>
 	 */
@@ -79,7 +82,7 @@ public class BlobJController {
 	}
 	
 	/**
-	 * Retrieve the BlobJ with the matching id
+	 * Retrieve the BlobJ with the matching id.
 	 * @param id id id of the BlobJ to retrieve
 	 * @return found BlobJ - Optional<BlobJ>
 	 */
@@ -92,7 +95,7 @@ public class BlobJController {
 	}
 	
 	/**
-	 * Retrieve the BlobJs with a count equal or greater than minCount 
+	 * Retrieve the BlobJs with a count equal or greater than minCount. 
 	 * @param minCount minimal Count requested
 	 * @return a list of BlobJ with matching conditions - Set<BlobJ>
 	 */
@@ -105,7 +108,7 @@ public class BlobJController {
 	}
 	
 	/**
-	 * Retrieve the BlobJs with a name which contains the received name 
+	 * Retrieve the BlobJs with a name which contains the received name. 
 	 * @param name required name to find
 	 * @return a list of BlobJ with a name which contains the received name - Set<BlobJ>
 	 */
@@ -118,7 +121,20 @@ public class BlobJController {
 	}
 	
 	/**
-	 * Update the BlobJ with the matching id
+	 * Retrieve all BlobJs with a matching type.
+	 * @param type type of BlobJ to retrieve
+	 * @return all BlobJs with a matching type - Set<BlobJ>
+	 */
+	@GetMapping("byType")
+	public Set<BlobJ> retrieveByType(@RequestParam(name="type", required = true ) final BlobJType type) {
+		
+		Set<BlobJ> blobJsToRetrieve = blobJService.retrieveByType(type);
+		
+		return blobJsToRetrieve;
+	}
+	
+	/**
+	 * Update the BlobJ with the matching id.
 	 * @param blobj new BlobJ data
 	 * @param bindingResult spring framework validation interface
 	 */
