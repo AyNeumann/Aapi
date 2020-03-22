@@ -1,6 +1,7 @@
 package com.example.Aapi.service;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +25,7 @@ public class BlobJService {
 	/** Reference to the log4j logger. */
 	private static final Logger LOG = LogManager.getLogger();
 	
-	/** Number of blobj return per page */
+	/** Number of blobJ return per page */
 	private static final int NUM_OF_BLOBJ_PER_PAGE = 50;
 	
 	/** Reference to the BlobJRepository */
@@ -34,7 +35,7 @@ public class BlobJService {
 	/**
 	 * Save the blobJ in the database
 	 * @param blobj blobJ to save
-	 * @return savedBlobJ
+	 * @return savedBlobJ - BlobJ
 	 */
 	public BlobJ saveBlobj(final BlobJ blobj) {
 		
@@ -46,7 +47,7 @@ public class BlobJService {
 	/**
 	 * Retrieve all BlobJ per page - 50 blobJ/page
 	 * @param pageNumber number of the page requested - 0 base count
-	 * @return required page with 50 blobJ sorted by name
+	 * @return required page with 50 blobJ sorted by name - Page<BlobJ>
 	 */
 	public Page<BlobJ> retrieveAllBlobJs(Integer pageNumber) {
 		Pageable pageable = PageRequest.of(pageNumber, NUM_OF_BLOBJ_PER_PAGE, Sort.by("name"));
@@ -56,6 +57,11 @@ public class BlobJService {
 		return blobjs;
 	}
 
+	/**
+	 * Retrieve the BlobJ with the matching id
+	 * @param id id of the BlobJ to retrieve
+	 * @return found BlobJ - Optional<BlobJ>
+	 */
 	public Optional<BlobJ> retrieveById(Long id) {
 		
 		Optional<BlobJ> blobJToRetrieve = blobJRepository.findById(id);
@@ -66,6 +72,35 @@ public class BlobJService {
 		}
 		
 		return blobJToRetrieve;
+	}
+	
+	/**
+	 * Retrieve the BlobJswith a count equal or greater than minCount 
+	 * @param minCount minimal Count requested
+	 * @return list of BlobJ with matching conditions -Set<BlobJ>
+	 */
+	public Set<BlobJ> retrieveByMinCount(Integer minCount) {
+		
+		Set<BlobJ> blobJsToRetrieve = blobJRepository.findByCountEqualsOrCountGreaterThan(minCount, minCount);
+		
+		return blobJsToRetrieve;
+	}
+	
+	/**
+	 * Retrieve the BlobJs with a name which contains the received name
+	 * @param name required name to find
+	 * @return a list of BlobJ with a name which contains the received name - Set<BlobJ>
+	 */
+	public Set<BlobJ> retrieveByName(String name) {
+		
+		Set<BlobJ> blobJsToRetrieve = blobJRepository.findByNameContainingOrderByNameAsc(name);
+		
+		return blobJsToRetrieve;
+	}
+
+	public void updateBlobJ(BlobJ blobj) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

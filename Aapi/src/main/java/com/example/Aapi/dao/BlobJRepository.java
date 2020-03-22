@@ -1,5 +1,7 @@
 package com.example.Aapi.dao;
 
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
@@ -18,4 +20,8 @@ import com.example.Aapi.dto.BlobJ;
 public interface BlobJRepository extends CrudRepository<BlobJ, Long>, PagingAndSortingRepository<BlobJ, Long> {
 
 	Page<BlobJ> findAll(Pageable pageable);
+	
+	Set<BlobJ> findByCountEqualsOrCountGreaterThan(int minCount, int minCount2);
+		
+	Set<BlobJ> findByNameContainingOrderByNameAsc(String name); 
 }
