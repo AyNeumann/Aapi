@@ -9,11 +9,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.Aapi.dto.BlobJ;
+import com.example.Aapi.dto.BlobJType;
 
 
 /**
  * Blob repository
- * @author Aymeric Neumann
+ * @author Aymeric NEUMANN
 
  */
 @Repository
@@ -23,5 +24,7 @@ public interface BlobJRepository extends CrudRepository<BlobJ, Long>, PagingAndS
 	
 	Set<BlobJ> findByCountEqualsOrCountGreaterThan(int minCount, int minCount2);
 		
-	Set<BlobJ> findByNameContainingOrderByNameAsc(String name); 
+	Set<BlobJ> findByNameContainingOrderByNameAsc(String name);
+	
+	Set<BlobJ> findByTypeOrderByNameAsc(BlobJType type);
 }
