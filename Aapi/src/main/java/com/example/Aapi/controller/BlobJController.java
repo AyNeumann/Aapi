@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -148,5 +149,18 @@ public class BlobJController {
 		}
 		
 		blobJService.updateBlobJ(blobj);
+	}
+	
+	/**
+	 * Delete the blobJ with the matching type
+	 * @param id id of the BLobJ to delete
+	 * @return true if the BlobJ has been deleted
+	 */
+	@DeleteMapping("delete")
+	public boolean deleteBlogJ (@RequestParam(name="id", required = true ) final Long id) {
+		
+		boolean isDeleted = blobJService.deleteBlobJ(id);
+		
+		return isDeleted;
 	}
 }
