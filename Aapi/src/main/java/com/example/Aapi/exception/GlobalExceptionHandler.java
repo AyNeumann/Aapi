@@ -14,15 +14,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
-	@ExceptionHandler({IllegalArgumentException.class})
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleException(final Exception ex) {
-		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-	}
-
-	@ExceptionHandler(AapiEntityException.class)
+	/*@ExceptionHandler(AapiEntityException.class)
 	public String handleAapiEntityException(final AapiEntityException aapiEntityException) {
 		String errorMessage = aapiEntityException.getMessage();
 		return errorMessage;
+	}*/
+	
+	@ExceptionHandler({IllegalArgumentException.class})
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<String> handleException(final IllegalArgumentException ex) {
+		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(AapiEntityException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<String> handleAapiEntityException(final AapiEntityException aapiEntityException) {
+		return new ResponseEntity<String>(aapiEntityException.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }

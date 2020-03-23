@@ -69,7 +69,7 @@ public class BlobJService {
 		Optional<BlobJ> blobJToRetrieve = blobJRepository.findById(id);
 		
 		if(!blobJToRetrieve.isPresent()) {
-			String message = "No BlobJ found with this id";
+			String message = "No BlobJ found with this id.";
 			LOG.warn(message);
 		}
 		
@@ -127,7 +127,7 @@ public class BlobJService {
 		boolean isDeleted = false;
 		
 		if(!blobJRepository.existsById(id)) {
-			String message = "No BlobJ found with this id";
+			String message = "No BlobJ found with this id.";
 			throw new AapiEntityException(message);
 		}
 		

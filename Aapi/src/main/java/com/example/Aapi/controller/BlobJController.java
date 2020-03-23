@@ -51,7 +51,7 @@ public class BlobJController {
 		LOG.warn(blobj.toString());
 		
 		if (bindingResult.hasErrors()) {
-			String message = "Attempt to create a Blobj with invalid data";
+			String message = "Attempt to create a Blobj with invalid data.";
 			LOG.warn(message);
 			throw new IllegalArgumentException(message);
 		}
@@ -130,10 +130,10 @@ public class BlobJController {
 	 * @param bindingResult spring framework validation interface
 	 */
 	@PutMapping("update")
-	public void updateBlobJ (@RequestBody final BlobJ blobj, final BindingResult bindingResult) {
+	public void updateBlobJ (@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
-			String message = "Attempt to udpate a Blobj with invalid data";
+			String message = "Attempt to udpate a Blobj with invalid data.";
 			LOG.warn(message);
 			throw new IllegalArgumentException(message);
 		}
