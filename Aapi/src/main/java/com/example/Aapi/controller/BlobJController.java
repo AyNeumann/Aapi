@@ -9,18 +9,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Aapi.dto.BlobJ;
@@ -43,12 +39,6 @@ public class BlobJController {
 	@Autowired
 	private BlobJService blobJService;
 	
-	@ExceptionHandler({IllegalArgumentException.class})
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleException(final Exception ex) {
-		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-	}
-	
 	/**
 	 * Create a blobj and return created blobj.
 	 * @param blobj blobj to create
@@ -61,7 +51,7 @@ public class BlobJController {
 		LOG.warn(blobj.toString());
 		
 		if (bindingResult.hasErrors()) {
-			String message = "Attempt to create a Blobj with invalid data";
+			String message = "Attempt to create a Blobj with invalid data.";
 			LOG.warn(message);
 			throw new IllegalArgumentException(message);
 		}
@@ -128,7 +118,7 @@ public class BlobJController {
 	 */
 	@GetMapping("byType")
 	public Set<BlobJ> retrieveByType(@RequestParam(name="type", required = true ) final BlobJType type) {
-		
+				
 		Set<BlobJ> blobJsToRetrieve = blobJService.retrieveByType(type);
 		
 		return blobJsToRetrieve;
@@ -143,7 +133,7 @@ public class BlobJController {
 	public void updateBlobJ (@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
-			String message = "Attempt to udpate a Blobj with invalid data";
+			String message = "Attempt to udpate a Blobj with invalid data.";
 			LOG.warn(message);
 			throw new IllegalArgumentException(message);
 		}
