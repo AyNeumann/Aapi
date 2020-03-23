@@ -113,8 +113,8 @@ public class BlobJService {
 	}
 
 	public void updateBlobJ(BlobJ blobj) {
-		// TODO Auto-generated method stub
-		
+				
+		blobJRepository.updateBlobJ(blobj.getId(), blobj.getName(), blobj.getCount(), blobj.getType());
 	}
 	
 	/**
