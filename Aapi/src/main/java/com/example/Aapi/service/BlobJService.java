@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.example.Aapi.dao.BlobJRepository;
 import com.example.Aapi.dto.BlobJ;
 import com.example.Aapi.dto.BlobJType;
+import com.example.Aapi.exception.AapiEntityException;
 
 /**
  * Service for Blob
@@ -125,14 +126,17 @@ public class BlobJService {
 		
 		boolean isDeleted = false;
 		
-		blobJRepository.deleteById(id);
-		
-		Optional<BlobJ> checkBlobJ = blobJRepository.findById(id);
-		
-		if(!checkBlobJ.isPresent()) {
-			isDeleted = true;
+		if(!blobJRepository.existsById(id)) {
+			String message = "No BlobJ found with this id";
+			throw new AapiEntityException(message);
 		}
 		
+		blobJRepository.deleteById(id);
+		
+		boolean hasBeenDeleted = blobJRepository.existsById(id);
+		
+		isDeleted = !hasBeenDeleted;
+				
 		return isDeleted;
 	}
 }
