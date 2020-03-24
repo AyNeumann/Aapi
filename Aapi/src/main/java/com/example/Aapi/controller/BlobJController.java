@@ -86,14 +86,56 @@ public class BlobJController {
 	}
 	
 	/**
-	 * Retrieve the BlobJs with a count equal or greater than minCount. 
+	 * Retrieve the BlobJs with a count strictly equal to requested count. 
 	 * @param minCount minimal Count requested
 	 * @return a list of BlobJ with matching conditions - Set<BlobJ>
 	 */
 	@GetMapping("byCount")
-	public Set<BlobJ> retrieveByMinCount(@RequestParam(name="minCount", required = true ) final Integer minCount) {
+	public Set<BlobJ> retrieveByCount(@RequestParam(name="count", required = true ) final Integer count) {
 		
-		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByMinCount(minCount);
+		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByCount(count, "exact");
+		
+		return blobJsToRetrieve;
+	}
+	
+	
+	/**
+	 * Retrieve the BlobJs with a count equal to or than greater the requested count. 
+	 * @param minCount minimal Count requested
+	 * @return a list of BlobJ with matching conditions - Set<BlobJ>
+	 */
+	@GetMapping("byCountMin")
+	public Set<BlobJ> retrieveByCountMin(@RequestParam(name="minCount", required = true ) final Integer minCount) {
+		
+		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByCount(minCount, "min");
+		
+		return blobJsToRetrieve;
+	}
+	
+	/**
+	 * Retrieve the BlobJs with a count equal to or less than the requested count. 
+	 * @param minCount minimal Count requested
+	 * @return a list of BlobJ with matching conditions - Set<BlobJ>
+	 */
+	@GetMapping("byCountMax")
+	public Set<BlobJ> retrieveByCountMax(@RequestParam(name="maxCount", required = true ) final Integer maxCount) {
+		
+		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByCount(maxCount, "max");
+		
+		return blobJsToRetrieve;
+	}
+	
+	/**
+	 * Retrieve the BlobJs with a count between the requested minimum and maximum count. 
+	 * @param minCount minimal Count requested
+	 * @return a list of BlobJ with matching conditions - Set<BlobJ>
+	 */
+	@GetMapping("byCountTranche")
+	public Set<BlobJ> retrieveByCountTranche(
+			@RequestParam(name="minCount", required = true ) final Integer minCount,
+			@RequestParam(name="maxCount", required = true ) final Integer maxCount) {
+		
+		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByCountTranche(minCount, maxCount);
 		
 		return blobJsToRetrieve;
 	}
