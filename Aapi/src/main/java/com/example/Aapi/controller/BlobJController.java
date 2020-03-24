@@ -130,7 +130,7 @@ public class BlobJController {
 	 * @param bindingResult spring framework validation interface
 	 */
 	@PutMapping("update")
-	public void updateBlobJ (@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
+	public BlobJ updateBlobJ (@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to udpate a Blobj with invalid data.";
@@ -138,7 +138,9 @@ public class BlobJController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		blobJService.updateBlobJ(blobj);
+		BlobJ udpatedBlob = blobJService.updateBlobJ(blobj);
+		
+		return udpatedBlob;
 	}
 	
 	/**

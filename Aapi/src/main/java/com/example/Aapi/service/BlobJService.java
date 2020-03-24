@@ -71,6 +71,7 @@ public class BlobJService {
 		if(!blobJToRetrieve.isPresent()) {
 			String message = "No BlobJ found with this id.";
 			LOG.warn(message);
+			throw new AapiEntityException(message);
 		}
 		
 		return blobJToRetrieve;
@@ -112,9 +113,25 @@ public class BlobJService {
 		return blobJsToRetrieve;
 	}
 
-	public void updateBlobJ(BlobJ blobj) {
+	/**
+	 * Update the BlobJ with the matching id.
+	 * @param blobj new BlobJ data
+	 */
+	public BlobJ updateBlobJ(BlobJ blobj) {
+		
+		BlobJ udpatedBlob = null;
 				
-		blobJRepository.updateBlobJ(blobj.getId(), blobj.getName(), blobj.getCount(), blobj.getType());
+		Integer updatedBlobJ = blobJRepository.updateBlobJ(blobj.getId(), blobj.getName(), blobj.getCount(), blobj.getType());
+		
+		if(updatedBlobJ == 1) {
+			udpatedBlob = blobj;
+		} else {
+			String message = "BlobJ has not been updated";
+			LOG.warn(message);
+			throw new AapiEntityException(message);
+		}
+		
+		return udpatedBlob;
 	}
 	
 	/**
@@ -128,6 +145,7 @@ public class BlobJService {
 		
 		if(!blobJRepository.existsById(id)) {
 			String message = "No BlobJ found with this id.";
+			LOG.warn(message);
 			throw new AapiEntityException(message);
 		}
 		

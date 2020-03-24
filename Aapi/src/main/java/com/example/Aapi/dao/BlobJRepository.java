@@ -33,10 +33,18 @@ public interface BlobJRepository extends CrudRepository<BlobJ, Long>, PagingAndS
 	
 	Set<BlobJ> findByTypeOrderByNameAsc(BlobJType type);
 	
+	/**
+	 * Update the BloBJ with the matching id.
+	 * @param blobJid id of the BlobJ to update
+	 * @param blobJname new name of the BloBJ to update
+	 * @param blobJcount new count of the BloBJ to update
+	 * @param blobJtype new type of the BlobJ to update
+	 * @return number of updated entities
+	 */
 	@Transactional
 	@Modifying(clearAutomatically = true)
 	@Query("UPDATE BlobJ b SET b.name = :blobJname, b.count = :blobJcount, b.type = :blobJtype WHERE b.id = :blobJid")
-	void updateBlobJ(
+	Integer updateBlobJ(
 			@Param("blobJid") Long blobJid, 
 			@Param("blobJname") String blobJname,
 			@Param("blobJcount") Integer blobJcount,
@@ -44,7 +52,3 @@ public interface BlobJRepository extends CrudRepository<BlobJ, Long>, PagingAndS
 			);
 	
 }
-/*
-@Param("blobJcount") Integer blobJcount,
-@Param("blobJtype") BlobJType blobJtype
-*/
