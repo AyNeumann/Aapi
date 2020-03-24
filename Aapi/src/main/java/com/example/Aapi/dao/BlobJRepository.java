@@ -27,13 +27,7 @@ public interface BlobJRepository extends CrudRepository<BlobJ, Long>, PagingAndS
 
 	Page<BlobJ> findAll(Pageable pageable);
 	
-	Set<BlobJ> findByCount(Integer count);
-	
-	Set<BlobJ> findByCountGreaterThanEqual(int minCount);
-	
-	Set<BlobJ> findByCountLessThanEqual(int maxCount);
-	
-	Set<BlobJ> findByCountGreaterThanEqualAndCountLessThanEqualOrderByCountAsc(int minCount, int maxCount);
+	Set<BlobJ> findByCountEqualsOrCountGreaterThan(int minCount, int minCount2);
 		
 	Set<BlobJ> findByNameContainingOrderByNameAsc(String name);
 	

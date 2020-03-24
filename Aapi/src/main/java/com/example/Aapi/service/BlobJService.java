@@ -69,51 +69,22 @@ public class BlobJService {
 		Optional<BlobJ> blobJToRetrieve = blobJRepository.findById(id);
 		
 		if(!blobJToRetrieve.isPresent()) {
-			StringBuilder message = new StringBuilder();
-			message.append("No BlobJ found with this id: ");
-			message.append(id);
+			String message = "No BlobJ found with this id.";
 			LOG.warn(message);
-			throw new AapiEntityException(message.toString());
+			throw new AapiEntityException(message);
 		}
 		
 		return blobJToRetrieve;
 	}
 	
 	/**
-	 * Retrieve the BlobJswith a count strictly equal or greater than or less than requested count.
-	 * @param count requested count
+	 * Retrieve the BlobJswith a count equal or greater than minCount.
+	 * @param minCount minimal Count requested
 	 * @return list of BlobJ with matching conditions -Set<BlobJ>
 	 */
-	public Set<BlobJ> retrieveByCount(Integer count, String type) {
+	public Set<BlobJ> retrieveByMinCount(Integer minCount) {
 		
-		Set<BlobJ> blobJsToRetrieve = null;
-		
-		switch(type) {
-			case "exact":
-				blobJsToRetrieve = blobJRepository.findByCount(count);
-				break;
-			case "min":
-				blobJsToRetrieve = blobJRepository.findByCountGreaterThanEqual(count);
-				break;
-			case "max":
-				blobJsToRetrieve = blobJRepository.findByCountLessThanEqual(count);
-				break;
-		}
-		
-		
-		return blobJsToRetrieve;
-	}
-	
-	/**
-	 * Retrieve the BlobJswith a count between the minimum and maximum requested count.
-	 * @param count requested count
-	 * @return list of BlobJ with matching conditions -Set<BlobJ>
-	 */
-	public Set<BlobJ> retrieveByCountTranche(Integer minCount, Integer maxCount) {
-		
-		Set<BlobJ> blobJsToRetrieve = null;
-		
-		blobJsToRetrieve = blobJRepository.findByCountGreaterThanEqualAndCountLessThanEqualOrderByCountAsc(minCount, maxCount);
+		Set<BlobJ> blobJsToRetrieve = blobJRepository.findByCountEqualsOrCountGreaterThan(minCount, minCount);
 		
 		return blobJsToRetrieve;
 	}
@@ -155,12 +126,9 @@ public class BlobJService {
 		if(updatedBlobJ == 1) {
 			udpatedBlob = blobj;
 		} else {
-			StringBuilder message = new StringBuilder();
-			message.append("BlobJ has not been updated.");
-			message.append(" BloBJ id: ");
-			message.append(blobj.getId().toString());
+			String message = "BlobJ has not been updated";
 			LOG.warn(message);
-			throw new AapiEntityException(message.toString());
+			throw new AapiEntityException(message);
 		}
 		
 		return udpatedBlob;
@@ -176,11 +144,9 @@ public class BlobJService {
 		boolean isDeleted = false;
 		
 		if(!blobJRepository.existsById(id)) {
-			StringBuilder message = new StringBuilder();
-			message.append("No BlobJ found with this id. Cannot delete BloBJ with id: ");
-			message.append(id);
+			String message = "No BlobJ found with this id.";
 			LOG.warn(message);
-			throw new AapiEntityException(message.toString());
+			throw new AapiEntityException(message);
 		}
 		
 		blobJRepository.deleteById(id);
