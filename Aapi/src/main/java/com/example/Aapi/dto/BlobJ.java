@@ -40,7 +40,7 @@ public class BlobJ {
      */
     @Override
     public String toString() {
-        return "Blob{" +
+        return "BlobJ{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", count='" + count + '\'' +

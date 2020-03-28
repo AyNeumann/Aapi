@@ -1,5 +1,6 @@
 package com.example.Aapi.controller;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,7 @@ import com.example.Aapi.service.BlobJService;
  * @author Aymeric NEUMANN
  *
  */
+@Validated
 @RestController
 @RequestMapping("/blobj/")
 public class BlobJController {
@@ -38,18 +41,16 @@ public class BlobJController {
 	/** Reference to BlobJService. */
 	@Autowired
 	private BlobJService blobJService;
-	
+		
 	/**
-	 * Create a blobj and return created blobj.
-	 * @param blobj blobj to create
+	 * Create a BlobJ and return saved BlobJ.
+	 * @param blobj BlobJ to create
 	 * @param bindingResult spring framework validation interface
-	 * @return the created blobj
+	 * @return the saved BlobJ
 	 */
 	@PostMapping("save")
-	public BlobJ saveBlob(@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
-		
-		LOG.warn(blobj.toString());
-		
+	public BlobJ saveBlobJ(@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
+				
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a Blobj with invalid data.";
 			LOG.warn(message);
@@ -58,6 +59,29 @@ public class BlobJController {
 		
 		BlobJ savedBlobJ = blobJService.saveBlobj(blobj);
 		
+		return savedBlobJ;
+	}
+	
+	/**
+	 * Create a list of BlobJ and return saved BloBJs.
+	 * The list is validated with the valid annotation in the method parameters
+	 * and with the validated annotation above the class.
+	 * If one of the item of the list is invalid throws ConstraintViolationException.
+ 	 * @param blobj BloBJs to save
+	 * @param bindingResult bindingResult spring framework validation interface
+	 * @return the saved BlobJs
+	 */
+	@PostMapping("saveAll")
+	public Iterable<BlobJ> saveAllBlobJs(@RequestBody @Valid final List<BlobJ> blobjs, final BindingResult bindingResult) {
+		
+		if (bindingResult.hasErrors()) {
+			String message = "Attempt to create a BlobJs with an invalid list.";
+			LOG.warn(message);
+			throw new IllegalArgumentException(message);
+		}
+							
+		Iterable<BlobJ> savedBlobJ = blobJService.saveAllBlobj(blobjs);
+				
 		return savedBlobJ;
 	}
 	
