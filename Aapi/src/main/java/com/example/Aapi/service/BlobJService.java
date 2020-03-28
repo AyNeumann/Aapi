@@ -1,5 +1,6 @@
 package com.example.Aapi.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -42,6 +43,13 @@ public class BlobJService {
 	public BlobJ saveBlobj(final BlobJ blobj) {
 		
 		BlobJ savedBlob = blobJRepository.save(blobj);
+		
+		return savedBlob;
+	}
+	
+	public Iterable<BlobJ> saveAllBlobj(final List<BlobJ> blobj) {
+		
+		Iterable<BlobJ> savedBlob = blobJRepository.saveAll(blobj);
 		
 		return savedBlob;
 	}
