@@ -98,7 +98,7 @@ public class BlobJController {
 	
 	/**
 	 * Retrieve the BlobJ with the matching id.
-	 * @param id id id of the BlobJ to retrieve
+	 * @param id id of the BlobJ to retrieve
 	 * @return found BlobJ - Optional<BlobJ>
 	 */
 	@GetMapping("byId")
@@ -200,6 +200,7 @@ public class BlobJController {
 	 * Update the BlobJ with the matching id.
 	 * @param blobj new BlobJ data
 	 * @param bindingResult spring framework validation interface
+	 * @return updated BlobJ
 	 */
 	@PutMapping("update")
 	public BlobJ updateBlobJ (@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
@@ -210,14 +211,14 @@ public class BlobJController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		BlobJ udpatedBlob = blobJService.updateBlobJ(blobj);
+		BlobJ udpatedBlobJ = blobJService.updateBlobJ(blobj);
 		
-		return udpatedBlob;
+		return udpatedBlobJ;
 	}
 	
 	/**
 	 * Delete the blobJ with the matching type
-	 * @param id id of the BLobJ to delete
+	 * @param id id of the BlobJ to delete
 	 * @return true if the BlobJ has been deleted
 	 */
 	@DeleteMapping("delete")
