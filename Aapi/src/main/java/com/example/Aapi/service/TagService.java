@@ -1,5 +1,7 @@
 package com.example.Aapi.service;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,18 @@ public class TagService {
 	public Tag saveTag(final Tag tag) {
 		
 		Tag savedTag = tagRepository.save(tag);
+		
+		return savedTag;
+	}
+	
+	/**
+	 * Save all Tags contained in the list
+	 * @param tag Tags to save
+	 * @return the saved Tags
+	 */
+	public Iterable<Tag> saveAllTag(final List<Tag> tag) {
+		
+		Iterable<Tag> savedTag = tagRepository.saveAll(tag);
 		
 		return savedTag;
 	}
