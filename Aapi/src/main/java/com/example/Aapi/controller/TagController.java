@@ -84,11 +84,8 @@ public class TagController {
 	@GetMapping("all")
 	public Page<Tag> retrieveAllTags(@RequestParam(name="pageNumber", required = true ) final Integer pageNumber) {
 		
-		//TODO Create saveAllTag method in tagService
-		//return tagService.retrieveAllTags(pageNumber);
+		return tagService.retrieveAllTags(pageNumber);
 		
-		//TO DELETE
-		return null;
 	}
 	
 	/**
