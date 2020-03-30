@@ -159,6 +159,12 @@ public class BlobJController {
 			@RequestParam(name="minCount", required = true ) final Integer minCount,
 			@RequestParam(name="maxCount", required = true ) final Integer maxCount) {
 		
+		if(minCount > maxCount) {
+			String message = "Minimal count cannot be superior to maximal count";
+			LOG.warn(message);
+			throw new IllegalArgumentException(message);
+		}
+		
 		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByCountTranche(minCount, maxCount);
 		
 		return blobJsToRetrieve;
