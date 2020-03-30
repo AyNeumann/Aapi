@@ -64,8 +64,8 @@ public class BlobJController {
 	
 	/**
 	 * Create a list of BlobJ and return saved BloBJs.
-	 * The list is validated with the valid annotation in the method parameters
-	 * and with the validated annotation above the class.
+	 * The list is validated with the Valid annotation in the method parameters
+	 * and with the Validated annotation above the class.
 	 * If one of the item of the list is invalid throws ConstraintViolationException.
  	 * @param blobj BloBJs to save
 	 * @param bindingResult bindingResult spring framework validation interface
@@ -158,6 +158,12 @@ public class BlobJController {
 	public Set<BlobJ> retrieveByCountTranche(
 			@RequestParam(name="minCount", required = true ) final Integer minCount,
 			@RequestParam(name="maxCount", required = true ) final Integer maxCount) {
+		
+		if(minCount > maxCount) {
+			String message = "Minimal count cannot be superior to maximal count";
+			LOG.warn(message);
+			throw new IllegalArgumentException(message);
+		}
 		
 		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByCountTranche(minCount, maxCount);
 		

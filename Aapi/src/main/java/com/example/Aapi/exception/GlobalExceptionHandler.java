@@ -10,6 +10,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 /**
  * Handle custom exceptions
@@ -22,30 +23,50 @@ public class GlobalExceptionHandler {
 	/** Reference to the log4j logger. */
 	private static final Logger LOG = LogManager.getLogger();
 	
-	/*@ExceptionHandler(AapiEntityException.class)
-	public String handleAapiEntityException(final AapiEntityException aapiEntityException) {
-		String errorMessage = aapiEntityException.getMessage();
-		return errorMessage;
-	}*/
-	
+	/**
+	 * Exception handler for Illegal Argument Exceptions.
+	 * @param ex the thrown illegal argument exception
+	 * @return error message as a string
+	 */
 	@ExceptionHandler({IllegalArgumentException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<String> handleException(final IllegalArgumentException ex) {
 		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(AapiEntityException.class)
+	/**
+	 * Exception handler for Method Argument Type Mismatch Exception.
+	 * @param ex the thrown method argument type mismatch exception
+	 * @return error message as a string
+	 */
+	@ExceptionHandler({MethodArgumentTypeMismatchException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleAapiEntityException(final AapiEntityException aapiEntityException) {
-		return new ResponseEntity<String>(aapiEntityException.getMessage(), HttpStatus.BAD_REQUEST);
+	public ResponseEntity<String> handleTyMissmatchException(final MethodArgumentTypeMismatchException ex) {
+		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
+	/**
+	 * Exception handler for Aapi Entity Exception.
+	 * @param ex the thrown Aapi entity exception
+	 * @return error message as a string
+	 */
+	@ExceptionHandler(AapiEntityException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<String> handleAapiEntityException(final AapiEntityException ex) {
+		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	
+	/**
+	 * Exception handler for Constraint Violation Exception.
+	 * @param ex thrown constraint violation exception
+	 * @return an error message as a string.
+	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleConstraintViolationException(final ConstraintViolationException  constraintViolationException) {
+	public ResponseEntity<String> handleConstraintViolationException(final ConstraintViolationException  ex) {
 		
 		//If there is multiple error constraintViolationException will contain multiple error message separated by commas
-		String defaultMessage = constraintViolationException.getMessage();
+		String defaultMessage = ex.getMessage();
 		LOG.warn("Default Message: " + defaultMessage);
 		StringBuilder expMessage = new StringBuilder();
 		
@@ -62,12 +83,22 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<String>(expMessage.toString(), HttpStatus.BAD_REQUEST);
 	}
 	
+	/**
+	 * Exception handler for Http Message Not Readable Exception.
+	 * @param thrown HTTP message not readable exception
+	 * @return error message as a string
+	 */
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleHttpMessageNotReadableException(final HttpMessageNotReadableException  httpMessageNotReadableException) {
-		return new ResponseEntity<String>(httpMessageNotReadableException.getMessage(), HttpStatus.BAD_REQUEST);
+	public ResponseEntity<String> handleHttpMessageNotReadableException(final HttpMessageNotReadableException ex) {
+		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
+	/**
+	 * Format and log each error contained in the constraint violation exception.
+	 * @param eMessage exception error message
+	 * @return formatted error message as a string
+	 */
 	private String formatAndLogExceptionMessage(String eMessage) {
 		
 		String number = eMessage.replaceAll("[^0-9]", "");
