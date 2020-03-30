@@ -1,11 +1,15 @@
 package com.example.Aapi.dto;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -34,6 +38,10 @@ public class BlobJ {
     @NotNull
     @Enumerated(EnumType.STRING)
     private BlobJType type;
+    
+    /** Many to many relationship with tags. */
+    @ManyToMany(cascade = CascadeType.MERGE)
+    private Set<Tag> tags;
     
 	/*
      * Override method toSTring
@@ -95,6 +103,20 @@ public class BlobJ {
 	 */
 	public void setType(BlobJType type) {
 		this.type = type;
+	}
+	
+	/**
+	 * @return the tags
+	 */
+	public Set<Tag> getTags() {
+		return tags;
+	}
+
+	/**
+	 * @param tags the tags to set
+	 */
+	public void setTags(Set<Tag> tags) {
+		this.tags = tags;
 	}
 
 }
