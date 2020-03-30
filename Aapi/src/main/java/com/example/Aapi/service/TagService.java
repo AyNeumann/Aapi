@@ -5,9 +5,14 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Aapi.dao.TagRepository;
+import com.example.Aapi.dto.BlobJ;
 import com.example.Aapi.dto.Tag;
 
 /**
@@ -49,6 +54,15 @@ public class TagService {
 		Iterable<Tag> savedTag = tagRepository.saveAll(tag);
 		
 		return savedTag;
+	}
+	
+	public Page<Tag> retrieveAllTags(Integer pageNumber) {
+		
+		Pageable pageable = PageRequest.of(pageNumber, NUM_OF_TAG_PER_PAGE, Sort.by("name"));
+		
+		Page<Tag> tags = tagRepository.findAll(pageable);
+		
+		return tags;
 	}
 
 }
