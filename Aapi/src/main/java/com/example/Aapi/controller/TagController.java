@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Aapi.dto.Tag;
+import com.example.Aapi.service.TagService;
 
 @RestController
 @RequestMapping("/tag/")
@@ -28,8 +30,8 @@ public class TagController {
 	/** Reference to the log4j logger. */
 	private static final Logger LOG = LogManager.getLogger();
 	
-	//TODO Create tag service
-	//TODO Add tagService reference
+	@Autowired
+	private TagService tagService;
 	
 	/**
 	 * Create a Tag and return saved Tag.
@@ -46,10 +48,9 @@ public class TagController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		//TODO Create saveTag method in tagService
-		//Tag savedTag = tagService.saveTag(tag);
+		Tag savedTag = tagService.saveTag(tag);
 		
-		return null;
+		return savedTag;
 	}
 	
 	/**
