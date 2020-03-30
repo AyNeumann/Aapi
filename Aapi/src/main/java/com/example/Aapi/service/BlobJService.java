@@ -47,6 +47,11 @@ public class BlobJService {
 		return savedBlob;
 	}
 	
+	/**
+	 * Save all BlobJ contained in the list
+	 * @param blobj BloBJs to save
+	 * @return the saved BlobJs
+	 */
 	public Iterable<BlobJ> saveAllBlobj(final List<BlobJ> blobj) {
 		
 		Iterable<BlobJ> savedBlob = blobJRepository.saveAll(blobj);

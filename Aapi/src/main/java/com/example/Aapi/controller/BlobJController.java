@@ -46,7 +46,7 @@ public class BlobJController {
 	 * Create a BlobJ and return saved BlobJ.
 	 * @param blobj BlobJ to create
 	 * @param bindingResult spring framework validation interface
-	 * @return the saved BlobJ
+	 * @return the saved BlobJ - BlobJ
 	 */
 	@PostMapping("save")
 	public BlobJ saveBlobJ(@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
@@ -69,7 +69,7 @@ public class BlobJController {
 	 * If one of the item of the list is invalid throws ConstraintViolationException.
  	 * @param blobj BloBJs to save
 	 * @param bindingResult bindingResult spring framework validation interface
-	 * @return the saved BlobJs
+	 * @return the saved BlobJs - Iterable<BlobJ>
 	 */
 	@PostMapping("saveAll")
 	public Iterable<BlobJ> saveAllBlobJs(@RequestBody @Valid final List<BlobJ> blobjs, final BindingResult bindingResult) {

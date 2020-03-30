@@ -71,10 +71,9 @@ public class TagController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		//TODO Create saveAllTag method in tagService
-		//Iterable<Tag> savedTags = tagService.saveAllTag(tags);
+		Iterable<Tag> savedTags = tagService.saveAllTag(tags);
 				
-		return null;
+		return savedTags;
 	}
 	
 	/**
