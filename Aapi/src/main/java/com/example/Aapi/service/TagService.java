@@ -41,6 +41,8 @@ public class TagService {
 	 */
 	public Tag saveTag(final Tag tag) {
 		
+		checkIfTagAlreadyExist(tag.getName());
+		
 		Tag savedTag = tagRepository.save(tag);
 		
 		return savedTag;
@@ -51,9 +53,13 @@ public class TagService {
 	 * @param tag Tags to save
 	 * @return the saved Tags
 	 */
-	public Iterable<Tag> saveAllTag(final List<Tag> tag) {
+	public Iterable<Tag> saveAllTag(final List<Tag> tags) {
 		
-		Iterable<Tag> savedTag = tagRepository.saveAll(tag);
+		for(Tag t : tags) {
+			checkIfTagAlreadyExist(t.getName());
+		}
+		
+		Iterable<Tag> savedTag = tagRepository.saveAll(tags);
 		
 		return savedTag;
 	}
@@ -77,7 +83,7 @@ public class TagService {
 	 * @param id id of the Tag to retrieve
 	 * @return found Tag - Optional<Tag>
 	 */
-	public Optional<Tag> retrieveById(final Long id) {
+	public Optional<Tag> retrieveTagById(final Long id) {
 		
 		Optional<Tag> tagToRetrieve = tagRepository.findById(id);
 		
@@ -97,7 +103,7 @@ public class TagService {
 	 * @param name required name to find
 	 * @return a list of Tags with a name which contains the received name - Set<Tag>
 	 */
-	public Set<Tag> retrieveByName(final String name) {
+	public Set<Tag> retrieveTagByName(final String name) {
 		
 		Set<Tag> tagToRetrieve = tagRepository.findByNameContainingOrderByNameAsc(name);
 		
@@ -153,6 +159,20 @@ public class TagService {
 		isDeleted = !hasBeenDeleted;
 				
 		return isDeleted;
+	}
+	
+	private void checkIfTagAlreadyExist(String name) {
+		Set<Tag> tagsWithSimilarNames = retrieveTagByName(name);
+		
+		for(Tag t : tagsWithSimilarNames) {
+			if(t.getName().trim().equalsIgnoreCase(name.trim())) {
+				StringBuilder message = new StringBuilder();
+				message.append("A Tag already exist with the name: ");
+				message.append(name);
+				LOG.warn(message);
+				throw new AapiEntityException(message.toString());
+			}
+		}
 	}
 
 }
