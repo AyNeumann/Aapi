@@ -15,4 +15,6 @@ public interface TagRepository extends CrudRepository<Tag, Long>, PagingAndSorti
 
 	Set<Tag> findByNameContainingOrderByNameAsc(String name);
 
+	Integer updateTag(Long id, String name);
+
 }

@@ -162,12 +162,12 @@ public class BlobJService {
 	 */
 	public BlobJ updateBlobJ(BlobJ blobj) {
 		
-		BlobJ udpatedBlob = null;
+		BlobJ updatedBlob = null;
 				
-		Integer updatedBlobJ = blobJRepository.updateBlobJ(blobj.getId(), blobj.getName(), blobj.getCount(), blobj.getType());
+		Integer blobJUpdateStatus = blobJRepository.updateBlobJ(blobj.getId(), blobj.getName(), blobj.getCount(), blobj.getType());
 		
-		if(updatedBlobJ == 1) {
-			udpatedBlob = blobj;
+		if(blobJUpdateStatus == 1) {
+			updatedBlob = blobj;
 		} else {
 			StringBuilder message = new StringBuilder();
 			message.append("BlobJ has not been updated.");
@@ -176,7 +176,7 @@ public class BlobJService {
 			LOG.warn(message);
 		}
 		
-		return udpatedBlob;
+		return updatedBlob;
 	}
 	
 	/**
