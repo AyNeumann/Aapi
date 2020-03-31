@@ -128,5 +128,31 @@ public class TagService {
 				
 		return updatedTag;
 	}
+	
+	/**
+	 * Delete the Tag with the matching type
+	 * @param id id of the Tag to delete
+	 * @return true if the Tag has been deleted
+	 */
+	public boolean deleteTag (final Long id) {
+		
+		boolean isDeleted = false;
+		
+		if(!tagRepository.existsById(id)) {
+			StringBuilder message = new StringBuilder();
+			message.append("No Tag found with this id: ");
+			message.append(id);
+			LOG.warn(message);
+			throw new AapiEntityException(message.toString());
+		}
+		
+		tagRepository.deleteById(id);
+		
+		boolean hasBeenDeleted = tagRepository.existsById(id);
+		
+		isDeleted = !hasBeenDeleted;
+				
+		return isDeleted;
+	}
 
 }
