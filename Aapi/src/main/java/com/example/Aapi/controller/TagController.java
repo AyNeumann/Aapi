@@ -142,10 +142,9 @@ public class TagController {
 	@DeleteMapping("delete")
 	public boolean deleteTag (@RequestParam(name="id", required = true ) final Long id) {
 		
-		//TODO Create deleteTag method in tagService
-		//boolean isDeleted = tagService.deleteBlobJ(id);
+		boolean isDeleted = tagService.deleteTag(id);
 		
-		return false;
+		return isDeleted;
 	}
 
 }
