@@ -30,6 +30,7 @@ public class TagController {
 	/** Reference to the log4j logger. */
 	private static final Logger LOG = LogManager.getLogger();
 	
+	/** Reference to the Tag Service */
 	@Autowired
 	private TagService tagService;
 	

@@ -1,5 +1,6 @@
 package com.example.Aapi.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.example.Aapi.dao.TagRepository;
 import com.example.Aapi.dto.Tag;
 import com.example.Aapi.exception.AapiEntityException;
+import com.example.Aapi.helper.StringFormatHelper;
 
 /**
  * Service for Tag
@@ -30,9 +32,13 @@ public class TagService {
 	/** Number of Tag return per page */
 	private static final int NUM_OF_TAG_PER_PAGE = 50;
 	
-	/** Reference to the BlobJRepository */
+	/** Reference to the Tag Repository */
 	@Autowired
 	TagRepository tagRepository;
+	
+	/** Reference to the String Format Helper */
+	@Autowired
+	StringFormatHelper stringFormatHelper;
 	
 	/**
 	 * Save the Tag in the database.
@@ -43,23 +49,29 @@ public class TagService {
 		
 		checkIfTagAlreadyExist(tag.getName());
 		
-		Tag savedTag = tagRepository.save(tag);
+		Tag tagToSave = formatTagData(tag);
+		
+		Tag savedTag = tagRepository.save(tagToSave);
 		
 		return savedTag;
 	}
 	
 	/**
-	 * Save all Tags contained in the list
+	 * Save all Tags contained in the list.
 	 * @param tag Tags to save
 	 * @return the saved Tags
 	 */
 	public Iterable<Tag> saveAllTag(final List<Tag> tags) {
 		
+		Set<Tag> tagsToSave = new HashSet<Tag>();
+		
 		for(Tag t : tags) {
 			checkIfTagAlreadyExist(t.getName());
+			formatTagData(t);
+			tagsToSave.add(t);
 		}
 		
-		Iterable<Tag> savedTag = tagRepository.saveAll(tags);
+		Iterable<Tag> savedTag = tagRepository.saveAll(tagsToSave);
 		
 		return savedTag;
 	}
@@ -136,7 +148,7 @@ public class TagService {
 	}
 	
 	/**
-	 * Delete the Tag with the matching type
+	 * Delete the Tag with the matching type.
 	 * @param id id of the Tag to delete
 	 * @return true if the Tag has been deleted
 	 */
@@ -161,6 +173,11 @@ public class TagService {
 		return isDeleted;
 	}
 	
+	/**
+	 * Check if a tag with the same name already exist in the database.
+	 * Throws AapiEntityException if a tag with the same name is found
+	 * @param name name of the tag to check
+	 */
 	private void checkIfTagAlreadyExist(String name) {
 		Set<Tag> tagsWithSimilarNames = retrieveTagByName(name);
 		
@@ -173,6 +190,20 @@ public class TagService {
 				throw new AapiEntityException(message.toString());
 			}
 		}
+	}
+	
+	/**
+	 * Format Tag data: capitalize name.
+	 * @param tagToFormat tag to format
+	 * @return formatted Tag - Tag
+	 */
+	private Tag formatTagData(Tag tagToFormat) {
+		
+		String formattedName = stringFormatHelper.capitalize(tagToFormat.getName());
+		
+		tagToFormat.setName(formattedName);
+		
+		return tagToFormat;
 	}
 
 }
