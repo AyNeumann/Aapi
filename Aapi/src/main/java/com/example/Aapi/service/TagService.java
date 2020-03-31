@@ -1,6 +1,8 @@
 package com.example.Aapi.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,8 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Aapi.dao.TagRepository;
-import com.example.Aapi.dto.BlobJ;
 import com.example.Aapi.dto.Tag;
+import com.example.Aapi.exception.AapiEntityException;
 
 /**
  * Service for Tag
@@ -63,6 +65,39 @@ public class TagService {
 		Page<Tag> tags = tagRepository.findAll(pageable);
 		
 		return tags;
+	}
+	
+	/**
+	 * Retrieve the Tag with the matching id.
+	 * @param id id of the Tag to retrieve
+	 * @return found Tag - Optional<Tag>
+	 */
+	public Optional<Tag> retrieveById(final Long id) {
+		
+		Optional<Tag> tagToRetrieve = tagRepository.findById(id);
+		
+		if(!tagToRetrieve.isPresent()) {
+			StringBuilder message = new StringBuilder();
+			message.append("No Tag found with this id: ");
+			message.append(id);
+			LOG.warn(message);
+			throw new AapiEntityException(message.toString());
+		}
+		
+		return tagToRetrieve;
+	}
+	
+	/**
+	 * Retrieve the Tags with a name which contains the received name. 
+	 * @param name required name to find
+	 * @return a list of Tags with a name which contains the received name - Set<Tag>
+	 */
+	public Set<Tag> retrieveByName(final String name) {
+		
+		Set<Tag> tagToRetrieve = tagRepository.findByNameContainingOrderByNameAsc(name);
+		
+		return tagToRetrieve;
+		
 	}
 
 }

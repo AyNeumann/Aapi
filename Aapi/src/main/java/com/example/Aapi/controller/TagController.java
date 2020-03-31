@@ -91,15 +91,14 @@ public class TagController {
 	/**
 	 * Retrieve the Tag with the matching id.
 	 * @param id id of the Tag to retrieve
-	 * @return found BlobJ - Optional<Tag>
+	 * @return found Tag - Optional<Tag>
 	 */
 	@GetMapping("byId")
 	public Optional<Tag> retrieveById(@RequestParam(name="id", required = true ) final Long id) {
 		
-		//TODO Create retrieveById method in tagService
-		//Optional<Tag> tagToRetrieve = tagService.retrieveById(id);
+		Optional<Tag> tagToRetrieve = tagService.retrieveById(id);
 		
-		return null;
+		return tagToRetrieve;
 	}
 	
 	/**
@@ -110,10 +109,9 @@ public class TagController {
 	@GetMapping("byName")
 	public Set<Tag> retrieveByName(@RequestParam(name="name", required = true ) final String name) {
 		
-		//TODO Create retrieveByName method in tagService
-		//Set<Tag> blobJsToRetrieve = tagService.retrieveByName(name);
+		Set<Tag> blobJsToRetrieve = tagService.retrieveByName(name);
 		
-		return null;
+		return blobJsToRetrieve;
 	}
 	
 	/**
