@@ -109,16 +109,16 @@ public class TagController {
 	@GetMapping("byName")
 	public Set<Tag> retrieveByName(@RequestParam(name="name", required = true ) final String name) {
 		
-		Set<Tag> blobJsToRetrieve = tagService.retrieveByName(name);
+		Set<Tag> tagToRetrieve = tagService.retrieveByName(name);
 		
-		return blobJsToRetrieve;
+		return tagToRetrieve;
 	}
 	
 	/**
 	 * Update the Tag with the matching id.
 	 * @param tag new Tag data
 	 * @param bindingResult spring framework validation interface
-	 * @return updated tag
+	 * @return updated tag or null if tag hasn't been updated - Tag
 	 */
 	@PutMapping("update")
 	public Tag updateTag (@RequestBody @Valid final Tag tag, final BindingResult bindingResult) {
@@ -129,10 +129,9 @@ public class TagController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		//TODO Create updateTag method in tagService
-		//Tag udpatedTag = tagService.updateTag(tag);
+		Tag udpatedTag = tagService.updateTag(tag);
 		
-		return null;
+		return udpatedTag;
 	}
 	
 	/**

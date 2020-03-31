@@ -58,6 +58,11 @@ public class TagService {
 		return savedTag;
 	}
 	
+	/**
+	 * Retrieve all tag from the database and return paginated data - 50 tag/page.
+	 * @param pageNumber number of the page requested - 0 base count
+	 * @return required page of Tag - Page<Tag>
+	 */
 	public Page<Tag> retrieveAllTags(Integer pageNumber) {
 		
 		Pageable pageable = PageRequest.of(pageNumber, NUM_OF_TAG_PER_PAGE, Sort.by("name"));
@@ -98,6 +103,30 @@ public class TagService {
 		
 		return tagToRetrieve;
 		
+	}
+	
+	/**
+	 * Update the Tag with the matching id.
+	 * @param tag new Tag data
+	 * @return updated tag or null if tag hasn't been updated - Tag
+	 */
+	public Tag updateTag (final Tag tag) {
+		
+		Tag updatedTag = null;
+		
+		Integer tagUpdatedStatus = tagRepository.updateTag(tag.getId(), tag.getName());
+		
+		if(tagUpdatedStatus == 1) {
+			updatedTag = tag;
+		} else {
+			StringBuilder message = new StringBuilder();
+			message.append("Tag has not been updated.");
+			message.append(" Tag id: ");
+			message.append(tag.getId());
+			LOG.warn(message);
+		}
+				
+		return updatedTag;
 	}
 
 }
