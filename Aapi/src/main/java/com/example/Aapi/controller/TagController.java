@@ -96,7 +96,7 @@ public class TagController {
 	@GetMapping("byId")
 	public Optional<Tag> retrieveById(@RequestParam(name="id", required = true ) final Long id) {
 		
-		Optional<Tag> tagToRetrieve = tagService.retrieveById(id);
+		Optional<Tag> tagToRetrieve = tagService.retrieveTagById(id);
 		
 		return tagToRetrieve;
 	}
@@ -109,7 +109,7 @@ public class TagController {
 	@GetMapping("byName")
 	public Set<Tag> retrieveByName(@RequestParam(name="name", required = true ) final String name) {
 		
-		Set<Tag> tagToRetrieve = tagService.retrieveByName(name);
+		Set<Tag> tagToRetrieve = tagService.retrieveTagByName(name);
 		
 		return tagToRetrieve;
 	}
