@@ -1,5 +1,6 @@
 package com.example.Aapi.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -17,6 +18,7 @@ import com.example.Aapi.dao.BlobJRepository;
 import com.example.Aapi.dto.BlobJ;
 import com.example.Aapi.dto.BlobJType;
 import com.example.Aapi.exception.AapiEntityException;
+import com.example.Aapi.helper.StringFormatHelper;
 
 /**
  * Service for Blob
@@ -34,6 +36,10 @@ public class BlobJService {
 	/** Reference to the BlobJRepository */
 	@Autowired
 	BlobJRepository blobJRepository;
+	
+	/** Reference to the String Format Helper */
+	@Autowired
+	StringFormatHelper stringFormatHelper;
 
 	/**
 	 * Save the blobJ in the database.
@@ -42,19 +48,28 @@ public class BlobJService {
 	 */
 	public BlobJ saveBlobj(final BlobJ blobj) {
 		
-		BlobJ savedBlob = blobJRepository.save(blobj);
+		BlobJ blobJToSave = formatBlobJData(blobj);
+		
+		BlobJ savedBlob = blobJRepository.save(blobJToSave);
 		
 		return savedBlob;
 	}
 	
 	/**
 	 * Save all BlobJ contained in the list
-	 * @param blobj BloBJs to save
+	 * @param blobjs BloBJs to save
 	 * @return the saved BlobJs
 	 */
-	public Iterable<BlobJ> saveAllBlobj(final List<BlobJ> blobj) {
+	public Iterable<BlobJ> saveAllBlobj(final List<BlobJ> blobjs) {
 		
-		Iterable<BlobJ> savedBlob = blobJRepository.saveAll(blobj);
+		Set<BlobJ> blobJsToSave = new HashSet<BlobJ>();
+		
+		for(BlobJ b : blobJsToSave) {
+			formatBlobJData(b);
+			blobJsToSave.add(b);
+		}
+		
+		Iterable<BlobJ> savedBlob = blobJRepository.saveAll(blobJsToSave);
 		
 		return savedBlob;
 	}
@@ -180,7 +195,7 @@ public class BlobJService {
 	}
 	
 	/**
-	 * Delete the blobJ with the matching type
+	 * Delete the blobJ with the matching type.
 	 * @param id id of the BLobJ to delete
 	 * @return true if the BlobJ has been deleted
 	 */
@@ -203,5 +218,19 @@ public class BlobJService {
 		isDeleted = !hasBeenDeleted;
 				
 		return isDeleted;
+	}
+	
+	/**
+	 * Format BlobJ data.
+	 * @param blobJToFormat BlobJ data to format
+	 * @return formatted BlobJ - BlobJ
+	 */
+	private BlobJ formatBlobJData(BlobJ blobJToFormat) {
+		
+		String formattedName = stringFormatHelper.capitalizeFully(blobJToFormat.getName());
+		
+		blobJToFormat.setName(formattedName);
+		
+		return blobJToFormat;
 	}
 }
