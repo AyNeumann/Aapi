@@ -48,6 +48,8 @@ public class BlobJService {
 	 */
 	public BlobJ saveBlobj(final BlobJ blobj) {
 		
+		checkIfBlobJAlreadyExist(blobj.getName());
+		
 		BlobJ blobJToSave = formatBlobJData(blobj);
 		
 		BlobJ savedBlob = blobJRepository.save(blobJToSave);
@@ -62,14 +64,15 @@ public class BlobJService {
 	 */
 	public Iterable<BlobJ> saveAllBlobj(final List<BlobJ> blobjs) {
 		
-		Set<BlobJ> blobJsToSave = new HashSet<BlobJ>();
+		Set<BlobJ> tagsToSave = new HashSet<BlobJ>();
 		
-		for(BlobJ b : blobJsToSave) {
+		for(BlobJ b : blobjs) {
+			checkIfBlobJAlreadyExist(b.getName());
 			formatBlobJData(b);
-			blobJsToSave.add(b);
+			tagsToSave.add(b);
 		}
 		
-		Iterable<BlobJ> savedBlob = blobJRepository.saveAll(blobJsToSave);
+		Iterable<BlobJ> savedBlob = blobJRepository.saveAll(tagsToSave);
 		
 		return savedBlob;
 	}
@@ -218,6 +221,25 @@ public class BlobJService {
 		isDeleted = !hasBeenDeleted;
 				
 		return isDeleted;
+	}
+	
+	/**
+	 * Check if a BlobJ with the same name already exist in the database.
+	 * Throws AapiEntityException if a BlobJ with the same name is found
+	 * @param name name of the BlobJ to check
+	 */
+	private void checkIfBlobJAlreadyExist(String name) {
+		Set<BlobJ> blobJWithSimilarNames = retrieveByName(name);
+		
+		for(BlobJ b : blobJWithSimilarNames) {
+			if(b.getName().trim().equalsIgnoreCase(name.trim())) {
+				StringBuilder message = new StringBuilder();
+				message.append("A BlobJ already exist with the name: ");
+				message.append(name);
+				LOG.warn(message);
+				throw new AapiEntityException(message.toString());
+			}
+		}
 	}
 	
 	/**
