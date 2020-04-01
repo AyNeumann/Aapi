@@ -175,8 +175,8 @@ public class TagService {
 	
 	/**
 	 * Check if a tag with the same name already exist in the database.
-	 * Throws AapiEntityException if a tag with the same name is found
-	 * @param name name of the tag to check
+	 * Throws AapiEntityException if a Tag with the same name is found
+	 * @param name name of the Tag to check
 	 */
 	private void checkIfTagAlreadyExist(String name) {
 		Set<Tag> tagsWithSimilarNames = retrieveTagByName(name);
