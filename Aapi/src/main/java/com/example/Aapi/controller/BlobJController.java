@@ -1,7 +1,6 @@
 package com.example.Aapi.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -23,7 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Aapi.dto.BlobJ;
 import com.example.Aapi.dto.BlobJType;
+import com.example.Aapi.dto.Tag;
 import com.example.Aapi.service.BlobJService;
+import com.example.Aapi.service.TagService;
+
+// TODO Improve method to add a tag to a BloBJ (in the service)
+// TODO Improve method to delete a tag to a BloBJ (in the service)
 
 /**
  * Manage request about blob.
@@ -41,6 +45,10 @@ public class BlobJController {
 	/** Reference to BlobJService. */
 	@Autowired
 	private BlobJService blobJService;
+	
+	/** Reference to the BlobJRepository */
+	@Autowired
+	TagService tagService;
 		
 	/**
 	 * Create a BlobJ and return saved BlobJ.
@@ -102,9 +110,9 @@ public class BlobJController {
 	 * @return found BlobJ - Optional<BlobJ>
 	 */
 	@GetMapping("byId")
-	public Optional<BlobJ> retrieveById(@RequestParam(name="id", required = true ) final Long id) {
+	public BlobJ retrieveById(@RequestParam(name="id", required = true ) final Long id) {
 		
-		Optional<BlobJ> blobJToRetrieve = blobJService.retrieveById(id);
+		BlobJ blobJToRetrieve = blobJService.retrieveById(id);
 		
 		return blobJToRetrieve;
 	}
@@ -214,6 +222,42 @@ public class BlobJController {
 		BlobJ udpatedBlobJ = blobJService.updateBlobJ(blobj);
 		
 		return udpatedBlobJ;
+	}
+	
+	/**
+	 * Add a Tag to a BlobJ
+	 * @param blobjId id of the BlobJ to add a tag to
+	 * @param tagId id of the tag to add
+	 * @return updated BlobJ
+	 */
+	@PutMapping("addTag")
+	public BlobJ addTagToBlobJ(
+			@RequestParam(name="blobjId", required = true ) final Long blobjId,
+			@RequestParam(name="tagId", required = true ) final Long tagId ) {
+		
+		Tag tagToAdd = tagService.retrieveTagById(tagId).get();
+		
+		BlobJ updatedBlobJ = blobJService.addTagToBlobJ(blobjId, tagToAdd);
+		
+		return updatedBlobJ;
+	}
+	
+	/**
+	 * Delete a Tag to a BlobJ
+	 * @param blobjId id of the BlobJ to delete a tag to
+	 * @param tagId id of the tag to delete
+	 * @return updated BlobJ
+	 */
+	@PutMapping("deleteTag")
+	public BlobJ deleteTagToBlobJ(
+			@RequestParam(name="blobjId", required = true ) final Long blobjId,
+			@RequestParam(name="tagId", required = true ) final Long tagId ) {
+		
+		Tag tagToDelete = tagService.retrieveTagById(tagId).get();
+		
+		BlobJ updatedBlobJ = blobJService.deleteTagToBlobJ(blobjId, tagToDelete);
+		
+		return updatedBlobJ;
 	}
 	
 	/**

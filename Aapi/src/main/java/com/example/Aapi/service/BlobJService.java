@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.example.Aapi.dao.BlobJRepository;
 import com.example.Aapi.dto.BlobJ;
 import com.example.Aapi.dto.BlobJType;
+import com.example.Aapi.dto.Tag;
 import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.helper.StringFormatHelper;
 
@@ -96,7 +97,7 @@ public class BlobJService {
 	 * @param id id of the BlobJ to retrieve
 	 * @return found BlobJ - Optional<BlobJ>
 	 */
-	public Optional<BlobJ> retrieveById(Long id) {
+	public BlobJ retrieveById(Long id) {
 		
 		Optional<BlobJ> blobJToRetrieve = blobJRepository.findById(id);
 		
@@ -108,7 +109,7 @@ public class BlobJService {
 			throw new AapiEntityException(message.toString());
 		}
 		
-		return blobJToRetrieve;
+		return blobJToRetrieve.get();
 	}
 	
 	/**
@@ -221,6 +222,66 @@ public class BlobJService {
 		isDeleted = !hasBeenDeleted;
 				
 		return isDeleted;
+	}
+	
+	/**
+	 * Add a Tag to a BlobJ and save it in the database
+	 * @param blobjId blobjId id of the BlobJ to add a tag to
+	 * @param tagToAdd tag to add
+	 * @return updated BlobJ
+	 */
+	public BlobJ addTagToBlobJ(Long blobjId, Tag tagToAdd) {
+		
+		BlobJ retrievedBlobJ = retrieveById(blobjId);
+		
+		Set<Tag> blobJTags = retrievedBlobJ.getTags();
+		
+		if(blobJTags.contains(tagToAdd)) {
+			StringBuilder message = new StringBuilder();
+			message.append("The BlobJ: ");
+			message.append(retrievedBlobJ.getId());
+			message.append(" ");
+			message.append(retrievedBlobJ.getName());
+			message.append(" already has the tag: ");
+			message.append(tagToAdd.getName());
+			LOG.info(message);
+			throw new AapiEntityException(message.toString());
+		}
+				
+		blobJTags.add(tagToAdd);
+		
+		retrievedBlobJ.setTags(blobJTags);
+		
+		blobJRepository.save(retrievedBlobJ);
+		
+		return retrievedBlobJ;
+	}
+	
+	public BlobJ deleteTagToBlobJ(Long blobjId, Tag tagToDelete) {
+		
+		BlobJ retrievedBlobJ = retrieveById(blobjId);
+		
+		Set<Tag> blobJTags = retrievedBlobJ.getTags();
+		
+		if(!blobJTags.contains(tagToDelete)) {
+			StringBuilder message = new StringBuilder();
+			message.append("The BlobJ: ");
+			message.append(retrievedBlobJ.getId());
+			message.append(" - ");
+			message.append(retrievedBlobJ.getName());
+			message.append(" doesn't have the tag: ");
+			message.append(tagToDelete.getName());
+			LOG.info(message);
+			throw new AapiEntityException(message.toString());
+		}
+				
+		blobJTags.remove(tagToDelete);
+		
+		retrievedBlobJ.setTags(blobJTags);
+		
+		blobJRepository.save(retrievedBlobJ);
+		
+		return retrievedBlobJ;
 	}
 	
 	/**
