@@ -20,7 +20,6 @@ import com.example.Aapi.dto.BlobJType;
 /**
  * Blob repository
  * @author Aymeric NEUMANN
-
  */
 @Repository
 public interface BlobJRepository extends CrudRepository<BlobJ, Long>, PagingAndSortingRepository<BlobJ, Long> {

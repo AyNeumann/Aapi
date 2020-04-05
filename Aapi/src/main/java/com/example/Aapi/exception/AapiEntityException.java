@@ -1,5 +1,10 @@
 package com.example.Aapi.exception;
 
+/**
+ * Aapi Entity Exception class.
+ * @author Aymeric NEUMANN
+ *
+ */
 public class AapiEntityException extends RuntimeException {
 	
 	/**serialVersionUID. */
