@@ -225,6 +225,19 @@ public class BlobJController {
 	}
 	
 	/**
+	 * Delete the blobJ with the matching type
+	 * @param id id of the BlobJ to delete
+	 * @return true if the BlobJ has been deleted
+	 */
+	@DeleteMapping("delete")
+	public boolean deleteBlogJ (@RequestParam(name="id", required = true ) final Long id) {
+		
+		boolean isDeleted = blobJService.deleteBlobJ(id);
+		
+		return isDeleted;
+	}
+	
+	/**
 	 * Add a Tag to a BlobJ
 	 * @param blobjId id of the BlobJ to add a tag to
 	 * @param tagId id of the tag to add
@@ -261,15 +274,18 @@ public class BlobJController {
 	}
 	
 	/**
-	 * Delete the blobJ with the matching type
-	 * @param id id of the BlobJ to delete
-	 * @return true if the BlobJ has been deleted
+	 * Add a linked BlobJ to a BlobJ
+	 * @param blobjId id of the BlobJ to add the linked BlobJ to
+	 * @param lnkBlobjId id of the BlobJ to add
+	 * @return updated BlobJ
 	 */
-	@DeleteMapping("delete")
-	public boolean deleteBlogJ (@RequestParam(name="id", required = true ) final Long id) {
+	@PutMapping("addBlobJ")
+	public BlobJ addlinkedBlobJToBlobJ(
+			@RequestParam(name="blobjId", required = true ) final Long blobjId,
+			@RequestParam(name="lBlobjId", required = true ) final Long lnkBlobjId ) {
 		
-		boolean isDeleted = blobJService.deleteBlobJ(id);
+		BlobJ updatedBlobJ = blobJService.addlinkedBlobJToBlobJ(blobjId, lnkBlobjId);
 		
-		return isDeleted;
+		return updatedBlobJ;
 	}
 }

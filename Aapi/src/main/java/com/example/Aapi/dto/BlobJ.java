@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Database entity for Blob
  * @author Aymeric NEUMANN
@@ -42,6 +44,10 @@ public class BlobJ {
     /** Many to many relationship with tags. */
     @ManyToMany(cascade = CascadeType.MERGE)
     private Set<Tag> tags;
+    
+    @JsonIgnoreProperties("linkedBlobJ")
+    @ManyToMany(cascade = CascadeType.MERGE)
+    private Set<BlobJ> linkedBlobJ;
     
 	/*
      * Override method toSTring
@@ -117,6 +123,20 @@ public class BlobJ {
 	 */
 	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
+	}
+	
+	/**
+	 * @return the linkedBlobJ
+	 */
+	public Set<BlobJ> getLinkedBlobJ() {
+		return linkedBlobJ;
+	}
+
+	/**
+	 * @param linkedBlobJ the linkedBlobJ to set
+	 */
+	public void setLinkedBlobJ(Set<BlobJ> linkedBlobJ) {
+		this.linkedBlobJ = linkedBlobJ;
 	}
 
 }
