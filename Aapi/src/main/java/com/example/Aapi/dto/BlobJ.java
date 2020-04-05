@@ -36,7 +36,7 @@ public class BlobJ {
     @NotNull
     private Integer count;
     
-    /** Blob type */
+    /** Blob type. */
     @NotNull
     @Enumerated(EnumType.STRING)
     private BlobJType type;
@@ -45,6 +45,7 @@ public class BlobJ {
     @ManyToMany(cascade = CascadeType.MERGE)
     private Set<Tag> tags;
     
+    /** Many to many relationship with linkedBlobJ. */
     @JsonIgnoreProperties("linkedBlobJ")
     @ManyToMany(cascade = CascadeType.MERGE)
     private Set<BlobJ> linkedBlobJ;

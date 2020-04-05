@@ -14,6 +14,11 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.Aapi.dto.Tag;
 
+/**
+ * Tag repository
+ * @author Aymeric NEUMANN
+ *
+ */
 public interface TagRepository extends CrudRepository<Tag, Long>, PagingAndSortingRepository<Tag, Long> {
 	
 	Page<Tag> findAll(Pageable pageable);

@@ -35,7 +35,7 @@ public class Tag {
     private Set<BlobJ> blobjs;
     
     /*
-     * Override method toSTring
+     * Override method toSTring.
      */
     @Override
     public String toString() {
