@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.Aapi.dto.BlobJ;
 import com.example.Aapi.dto.BlobJType;
 import com.example.Aapi.dto.Tag;
+import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
 import com.example.Aapi.service.TagService;
 
-// TODO Improve method to add a tag to a BloBJ (in the service)
 // TODO Improve method to delete a tag to a BloBJ (in the service)
 
 /**
@@ -284,7 +284,29 @@ public class BlobJController {
 			@RequestParam(name="blobjId", required = true ) final Long blobjId,
 			@RequestParam(name="lBlobjId", required = true ) final Long lnkBlobjId ) {
 		
+		if(blobjId == lnkBlobjId) {
+			String message = "A BlobJ cannot be linked to itself";
+			LOG.info(message);
+			throw new AapiEntityException(message.toString());
+		}
+		
 		BlobJ updatedBlobJ = blobJService.addlinkedBlobJToBlobJ(blobjId, lnkBlobjId);
+		
+		return updatedBlobJ;
+	}
+	
+	/**
+	 * Delete a linked BlobJ to a BlobJ.
+	 * @param blobjId id of the BlobJ to delete the linked BlobJ from
+	 * @param lnkBlobjId id of the BlobJ to delete
+	 * @return updated BlobJ
+	 */
+	@PutMapping("deleteBlobJ")
+	public BlobJ deletelinkedBlobJToBlobJ(
+			@RequestParam(name="blobjId", required = true ) final Long blobjId,
+			@RequestParam(name="lBlobjId", required = true ) final Long lnkBlobjId ) {
+		
+		BlobJ updatedBlobJ = blobJService.deletelinkedBlobJToBlobJ(blobjId, lnkBlobjId);
 		
 		return updatedBlobJ;
 	}
