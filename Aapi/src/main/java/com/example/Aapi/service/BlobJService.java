@@ -291,7 +291,7 @@ public class BlobJService {
 	}
 	
 	/**
-	 * Add a linked BlobJ to a BlobJ
+	 * Add a linked BlobJ to a BlobJ.
 	 * @param blobjId id of the BlobJ to add the linked BlobJ to
 	 * @param lnkBlobjId id of the BlobJ to add
 	 * @return updated BlobJ
@@ -314,6 +314,36 @@ public class BlobJService {
 		}
 				
 		retrievedBlobJ.getLinkedBlobJ().add(lnkRetrievedBlobJ);
+				
+		blobJRepository.save(retrievedBlobJ);
+		
+		return retrievedBlobJ;
+	}
+	
+	/**
+	 * Delete a linked BlobJ to a BlobJ.
+	 * @param blobjId id of the BlobJ to delete the linked BlobJ from
+	 * @param lnkBlobjId id of the BlobJ to delete
+	 * @return updated BlobJ
+	 */
+	public BlobJ deletelinkedBlobJToBlobJ(Long blobjId, Long lnkBlobjId) {
+		
+		BlobJ retrievedBlobJ = retrieveById(blobjId);
+		BlobJ lnkRetrievedBlobJ = retrieveById(lnkBlobjId);
+		
+		if(!retrievedBlobJ.getLinkedBlobJ().contains(lnkRetrievedBlobJ)) {
+			StringBuilder message = new StringBuilder();
+			message.append("The BlobJ: ");
+			message.append(retrievedBlobJ.getId());
+			message.append(" ");
+			message.append(retrievedBlobJ.getName());
+			message.append(" doesn't have for linked BlobJ: ");
+			message.append(lnkRetrievedBlobJ.getName());
+			LOG.info(message);
+			throw new AapiEntityException(message.toString());
+		}
+				
+		retrievedBlobJ.getLinkedBlobJ().remove(lnkRetrievedBlobJ);
 				
 		blobJRepository.save(retrievedBlobJ);
 		
