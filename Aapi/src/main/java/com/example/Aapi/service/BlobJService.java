@@ -1,6 +1,6 @@
 package com.example.Aapi.service;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -64,15 +64,15 @@ public class BlobJService {
 	 * @return the saved BlobJs
 	 */
 	public Iterable<BlobJ> saveAllBlobj(final List<BlobJ> blobjs) {
-		
-		Set<BlobJ> tagsToSave = new HashSet<BlobJ>();
+				
+		List<BlobJ> tagsToSave = new ArrayList<BlobJ>();
 		
 		for(BlobJ b : blobjs) {
 			checkIfBlobJAlreadyExist(b.getName());
 			formatBlobJData(b);
 			tagsToSave.add(b);
 		}
-		
+				
 		Iterable<BlobJ> savedBlob = blobJRepository.saveAll(tagsToSave);
 		
 		return savedBlob;

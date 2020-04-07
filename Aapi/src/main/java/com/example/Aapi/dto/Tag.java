@@ -21,7 +21,7 @@ public class Tag {
 	
 	/** Id of the Tag.*/
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 	
 	/** Tag name.*/
