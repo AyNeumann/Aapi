@@ -65,15 +65,15 @@ public class BlobJService {
 	 */
 	public Iterable<BlobJ> saveAllBlobj(final List<BlobJ> blobjs) {
 				
-		List<BlobJ> tagsToSave = new ArrayList<BlobJ>();
+		List<BlobJ> blobjsToSave = new ArrayList<BlobJ>();
 		
 		for(BlobJ b : blobjs) {
 			checkIfBlobJAlreadyExist(b.getName());
 			formatBlobJData(b);
-			tagsToSave.add(b);
+			blobjsToSave.add(b);
 		}
 				
-		Iterable<BlobJ> savedBlob = blobJRepository.saveAll(tagsToSave);
+		Iterable<BlobJ> savedBlob = blobJRepository.saveAll(blobjsToSave);
 		
 		return savedBlob;
 	}
