@@ -24,7 +24,7 @@ public class BlobJ {
 	
 	/** Id of the blob.*/
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 	
 	/** Blob name.*/
@@ -36,7 +36,11 @@ public class BlobJ {
     @NotNull
     private Integer count;
     
-    /** Blob type. */
+    /** Blob rank. */
+    @NotNull
+    private Integer rank;
+    
+	/** Blob type. */
     @NotNull
     @Enumerated(EnumType.STRING)
     private BlobJType type;
@@ -96,6 +100,20 @@ public class BlobJ {
 	 */
 	public void setCount(Integer count) {
 		this.count = count;
+	}
+	
+	/**
+	 * @return the rank
+	 */
+	public Integer getRank() {
+		return rank;
+	}
+
+	/**
+	 * @param rank the rank to set
+	 */
+	public void setRank(Integer rank) {
+		this.rank = rank;
 	}
 	
 	/**

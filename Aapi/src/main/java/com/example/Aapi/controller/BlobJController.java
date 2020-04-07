@@ -27,7 +27,7 @@ import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
 import com.example.Aapi.service.TagService;
 
-// TODO Improve method to delete a tag to a BloBJ (in the service)
+// TODO create a Cron
 
 /**
  * Manage request about blob.
@@ -81,7 +81,7 @@ public class BlobJController {
 	 */
 	@PostMapping("saveAll")
 	public Iterable<BlobJ> saveAllBlobJs(@RequestBody @Valid final List<BlobJ> blobjs, final BindingResult bindingResult) {
-		
+				
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a BlobJs with an invalid list.";
 			LOG.warn(message);
