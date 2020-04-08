@@ -32,6 +32,9 @@ public class BlobJ {
     @NotBlank
     private String name;
     
+    /** Blob associated sign */
+    private String sign;
+    
     /** Blob count. */
     @NotNull
     private Integer count;
@@ -45,7 +48,7 @@ public class BlobJ {
     @Enumerated(EnumType.STRING)
     private BlobJType type;
     
-    /** Many to many relationship with tags. */
+	/** Many to many relationship with tags. */
     @ManyToMany(cascade = CascadeType.MERGE)
     private Set<Tag> tags;
     
@@ -89,6 +92,20 @@ public class BlobJ {
 	}
 	
 	/**
+	 * @return the sign
+	 */
+	public String getSign() {
+		return sign;
+	}
+
+	/**
+	 * @param sign the sign to set
+	 */
+	public void setSign(String sign) {
+		this.sign = sign;
+	}
+	
+	/**
 	 * @return the count
 	 */
 	public Integer getCount() {
@@ -115,7 +132,7 @@ public class BlobJ {
 	public void setRank(Integer rank) {
 		this.rank = rank;
 	}
-	
+		
 	/**
 	 * @return the type
 	 */
