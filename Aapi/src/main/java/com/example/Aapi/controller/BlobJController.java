@@ -27,8 +27,6 @@ import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
 import com.example.Aapi.service.TagService;
 
-// TODO create a Cron that do something on the database
-
 /**
  * Manage request about blob.
  * @author Aymeric NEUMANN
