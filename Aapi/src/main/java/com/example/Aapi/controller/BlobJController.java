@@ -259,11 +259,11 @@ public class BlobJController {
 	 * @return updated BlobJ
 	 */
 	@PutMapping("deleteTag")
-	public BlobJ deleteTagToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
+	public BlobJ deleteTagFromBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
 		Tag tagToDelete = tagService.retrieveTagById(infos.getObjectId()).get();
 		
-		BlobJ updatedBlobJ = blobJService.deleteTagToBlobJ(infos.getBlobJId(), tagToDelete);
+		BlobJ updatedBlobJ = blobJService.deleteTagFromBlobJ(infos.getBlobJId(), tagToDelete);
 		
 		return updatedBlobJ;
 	}
@@ -275,7 +275,7 @@ public class BlobJController {
 	 * @return updated BlobJ
 	 */
 	@PutMapping("addBlobJ")
-	public BlobJ addlinkedBlobJToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
+	public BlobJ addLinkedBlobJToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to add a linked BlobJ with invalid data.";
@@ -289,7 +289,7 @@ public class BlobJController {
 			throw new AapiEntityException(message.toString());
 		}
 		
-		BlobJ updatedBlobJ = blobJService.addlinkedBlobJToBlobJ(infos.getBlobJId(), infos.getObjectId());
+		BlobJ updatedBlobJ = blobJService.addLinkedBlobJToBlobJ(infos.getBlobJId(), infos.getObjectId());
 		
 		return updatedBlobJ;
 	}
@@ -301,9 +301,9 @@ public class BlobJController {
 	 * @return updated BlobJ
 	 */
 	@PutMapping("deleteBlobJ")
-	public BlobJ deletelinkedBlobJToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
+	public BlobJ deleteLinkedBlobJFromBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
-		BlobJ updatedBlobJ = blobJService.deletelinkedBlobJToBlobJ(infos.getBlobJId(), infos.getObjectId());
+		BlobJ updatedBlobJ = blobJService.deleteLinkedBlobJFromBlobJ(infos.getBlobJId(), infos.getObjectId());
 		
 		return updatedBlobJ;
 	}
