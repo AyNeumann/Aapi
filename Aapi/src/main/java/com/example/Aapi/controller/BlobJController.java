@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Aapi.dto.BlobJ;
 import com.example.Aapi.dto.BlobJType;
+import com.example.Aapi.dto.IdInfo;
 import com.example.Aapi.dto.Tag;
 import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
@@ -237,74 +238,72 @@ public class BlobJController {
 	
 	/**
 	 * Add a Tag to a BlobJ
-	 * @param blobjId id of the BlobJ to add a tag to
-	 * @param tagId id of the tag to add
+ 	 * @param IdInfo IdInfo containing the id of the BlobJ to update and the Id of the Tag to add
+	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
 	@PutMapping("addTag")
-	public BlobJ addTagToBlobJ(
-			@RequestParam(name="blobjId", required = true ) final Long blobjId,
-			@RequestParam(name="tagId", required = true ) final Long tagId ) {
+	public BlobJ addTagToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
-		Tag tagToAdd = tagService.retrieveTagById(tagId).get();
+		Tag tagToAdd = tagService.retrieveTagById(infos.getObjectId()).get();
 		
-		BlobJ updatedBlobJ = blobJService.addTagToBlobJ(blobjId, tagToAdd);
+		BlobJ updatedBlobJ = blobJService.addTagToBlobJ(infos.getBlobJId(), tagToAdd);
 		
 		return updatedBlobJ;
 	}
 	
 	/**
-	 * Delete a Tag to a BlobJ
-	 * @param blobjId id of the BlobJ to delete a tag to
-	 * @param tagId id of the tag to delete
+	 * Delete a Tag from a BlobJ
+	 * @param IdInfo IdInfo containing the id of the BlobJ to update and the Id of the Tag to delete
+	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
 	@PutMapping("deleteTag")
-	public BlobJ deleteTagToBlobJ(
-			@RequestParam(name="blobjId", required = true ) final Long blobjId,
-			@RequestParam(name="tagId", required = true ) final Long tagId ) {
+	public BlobJ deleteTagToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
-		Tag tagToDelete = tagService.retrieveTagById(tagId).get();
+		Tag tagToDelete = tagService.retrieveTagById(infos.getObjectId()).get();
 		
-		BlobJ updatedBlobJ = blobJService.deleteTagToBlobJ(blobjId, tagToDelete);
+		BlobJ updatedBlobJ = blobJService.deleteTagToBlobJ(infos.getBlobJId(), tagToDelete);
 		
 		return updatedBlobJ;
 	}
 	
 	/**
 	 * Add a linked BlobJ to a BlobJ
-	 * @param blobjId id of the BlobJ to add the linked BlobJ to
-	 * @param lnkBlobjId id of the BlobJ to add
+ 	 * @param IdInfo IdInfo containing the id of the BlobJ to update and the Id of the BlobJ to add
+	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
 	@PutMapping("addBlobJ")
-	public BlobJ addlinkedBlobJToBlobJ(
-			@RequestParam(name="blobjId", required = true ) final Long blobjId,
-			@RequestParam(name="lBlobjId", required = true ) final Long lnkBlobjId ) {
+	public BlobJ addlinkedBlobJToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
-		if(blobjId == lnkBlobjId) {
+		if (bindingResult.hasErrors()) {
+			String message = "Attempt to add a linked BlobJ with invalid data.";
+			LOG.warn(message);
+			throw new IllegalArgumentException(message);
+		}
+		
+		if(infos.getBlobJId() == infos.getObjectId()) {
 			String message = "A BlobJ cannot be linked to itself";
 			LOG.info(message);
 			throw new AapiEntityException(message.toString());
 		}
 		
-		BlobJ updatedBlobJ = blobJService.addlinkedBlobJToBlobJ(blobjId, lnkBlobjId);
+		BlobJ updatedBlobJ = blobJService.addlinkedBlobJToBlobJ(infos.getBlobJId(), infos.getObjectId());
 		
 		return updatedBlobJ;
 	}
 	
 	/**
 	 * Delete a linked BlobJ to a BlobJ.
-	 * @param blobjId id of the BlobJ to delete the linked BlobJ from
-	 * @param lnkBlobjId id of the BlobJ to delete
+ 	 * @param IdInfo IdInfo containing the id of the BlobJ to update and the Id of the BlobJ to delete
+	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
 	@PutMapping("deleteBlobJ")
-	public BlobJ deletelinkedBlobJToBlobJ(
-			@RequestParam(name="blobjId", required = true ) final Long blobjId,
-			@RequestParam(name="lBlobjId", required = true ) final Long lnkBlobjId ) {
+	public BlobJ deletelinkedBlobJToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
-		BlobJ updatedBlobJ = blobJService.deletelinkedBlobJToBlobJ(blobjId, lnkBlobjId);
+		BlobJ updatedBlobJ = blobJService.deletelinkedBlobJToBlobJ(infos.getBlobJId(), infos.getObjectId());
 		
 		return updatedBlobJ;
 	}
