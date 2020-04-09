@@ -263,7 +263,7 @@ public class BlobJService {
 	 * @param tagToDelete tagId id of the tag to delete
 	 * @return updated BlobJ
 	 */
-	public BlobJ deleteTagToBlobJ(Long blobjId, Tag tagToDelete) {
+	public BlobJ deleteTagFromBlobJ(Long blobjId, Tag tagToDelete) {
 		
 		BlobJ retrievedBlobJ = retrieveById(blobjId);
 		
@@ -296,7 +296,7 @@ public class BlobJService {
 	 * @param lnkBlobjId id of the BlobJ to add
 	 * @return updated BlobJ
 	 */
-	public BlobJ addlinkedBlobJToBlobJ(Long blobjId, Long lnkBlobjId) {
+	public BlobJ addLinkedBlobJToBlobJ(Long blobjId, Long lnkBlobjId) {
 		
 		BlobJ retrievedBlobJ = retrieveById(blobjId);
 		BlobJ lnkRetrievedBlobJ = retrieveById(lnkBlobjId);
@@ -326,7 +326,7 @@ public class BlobJService {
 	 * @param lnkBlobjId id of the BlobJ to delete
 	 * @return updated BlobJ
 	 */
-	public BlobJ deletelinkedBlobJToBlobJ(Long blobjId, Long lnkBlobjId) {
+	public BlobJ deleteLinkedBlobJFromBlobJ(Long blobjId, Long lnkBlobjId) {
 		
 		BlobJ retrievedBlobJ = retrieveById(blobjId);
 		BlobJ lnkRetrievedBlobJ = retrieveById(lnkBlobjId);
