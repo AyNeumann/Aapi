@@ -28,6 +28,8 @@ import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
 import com.example.Aapi.service.TagService;
 
+//TODO: Implement unit test
+
 /**
  * Manage request about blob.
  * @author Aymeric NEUMANN
