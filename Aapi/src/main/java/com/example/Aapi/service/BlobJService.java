@@ -81,11 +81,11 @@ public class BlobJService {
 	/**
 	 * Retrieve all BlobJ per page - 50 blobJ/page.
 	 * @param pageNumber number of the page requested - 0 base count
-	 * @return required page with 50 blobJ sorted by name - Page<BlobJ>
+	 * @return required page with 50 blobJ sorted by rank - Page<BlobJ>
 	 */
 	public Page<BlobJ> retrieveAllBlobJs(Integer pageNumber) {
 		
-		Pageable pageable = PageRequest.of(pageNumber, NUM_OF_BLOBJ_PER_PAGE, Sort.by("name"));
+		Pageable pageable = PageRequest.of(pageNumber, NUM_OF_BLOBJ_PER_PAGE, Sort.by("rank"));
 		
 		Page<BlobJ> blobjs = blobJRepository.findAll(pageable);
 		

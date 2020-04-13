@@ -28,6 +28,7 @@ import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
 import com.example.Aapi.service.TagService;
 
+//TODO: Rank could be null. If so auto-generate rank
 //TODO: Implement unit test
 
 /**
