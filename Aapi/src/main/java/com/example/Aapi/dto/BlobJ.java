@@ -58,7 +58,7 @@ public class BlobJ {
     private Set<BlobJ> linkedBlobJ;
     
 	/*
-     * Override method toSTring
+     * Override method toString
      */
     @Override
     public String toString() {
