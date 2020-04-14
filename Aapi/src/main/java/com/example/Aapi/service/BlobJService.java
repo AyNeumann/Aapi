@@ -48,10 +48,10 @@ public class BlobJService {
 	 * @return savedBlobJ - BlobJ
 	 */
 	public BlobJ saveBlobj(final BlobJ blobj) {
-		
+				
 		checkIfBlobJAlreadyExist(blobj.getName());
 		
-		BlobJ blobJToSave = formatBlobJData(blobj);
+		BlobJ blobJToSave = checkAndFormatBlobJData(blobj);
 		
 		BlobJ savedBlob = blobJRepository.save(blobJToSave);
 		
@@ -69,7 +69,7 @@ public class BlobJService {
 		
 		for(BlobJ b : blobjs) {
 			checkIfBlobJAlreadyExist(b.getName());
-			formatBlobJData(b);
+			checkAndFormatBlobJData(b);
 			blobjsToSave.add(b);
 		}
 				
@@ -374,9 +374,21 @@ public class BlobJService {
 	 * @param blobJToFormat BlobJ data to format
 	 * @return formatted BlobJ - BlobJ
 	 */
-	private BlobJ formatBlobJData(BlobJ blobJToFormat) {
+	private BlobJ checkAndFormatBlobJData(BlobJ blobJToFormat) {
+		
+		//regex : [a-zA-Z\\-]*\\s*Blob$
 		
 		String formattedName = stringFormatHelper.capitalizeFully(blobJToFormat.getName());
+		
+        if (!formattedName.matches("[a-zA-Z\\-]*\\s*Blob$")) {
+        	StringBuilder message = new StringBuilder();
+			message.append("This BlobJ don't have a correct name: ");
+			message.append(formattedName);
+			message.append(". BlobJ name must contain a word and then end by 'Blob'.");
+			LOG.warn(message);
+			throw new AapiEntityException(message.toString());
+        }
+	    
 		
 		blobJToFormat.setName(formattedName);
 		
