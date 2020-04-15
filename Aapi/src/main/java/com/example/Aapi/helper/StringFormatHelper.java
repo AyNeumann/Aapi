@@ -1,6 +1,5 @@
 package com.example.Aapi.helper;
 
-import org.springframework.stereotype.Service;
 import org.apache.commons.text.WordUtils;
 
 /**
@@ -10,7 +9,6 @@ import org.apache.commons.text.WordUtils;
  * @author Aymeric NEUMANN
  *
  */
-@Service
 public class StringFormatHelper {
 
 	/**
@@ -18,7 +16,7 @@ public class StringFormatHelper {
 	 * @param toCapitalize String to capitalize
 	 * @return capitalized String - first word only
 	 */
-	public String capitalize(String toCapitalize) {
+	public static String capitalize(String toCapitalize) {
 		return WordUtils.capitalize(toCapitalize);
 	}
 	
@@ -27,7 +25,7 @@ public class StringFormatHelper {
 	 * @param toCapitalize String to capitalize
 	 * @return capitalized String - each word
 	 */
-	public String capitalizeFully(String toCapitalize) {
+	public static String capitalizeFully(String toCapitalize) {
 		return WordUtils.capitalizeFully(toCapitalize);
 	}
 }

@@ -35,11 +35,7 @@ public class TagService {
 	/** Reference to the Tag Repository */
 	@Autowired
 	TagRepository tagRepository;
-	
-	/** Reference to the String Format Helper */
-	@Autowired
-	StringFormatHelper stringFormatHelper;
-	
+		
 	/**
 	 * Save the Tag in the database.
 	 * @param tag tag to save
@@ -199,7 +195,7 @@ public class TagService {
 	 */
 	private Tag formatTagData(Tag tagToFormat) {
 		
-		String formattedName = stringFormatHelper.capitalize(tagToFormat.getName());
+		String formattedName = StringFormatHelper.capitalize(tagToFormat.getName());
 		
 		tagToFormat.setName(formattedName);
 		
