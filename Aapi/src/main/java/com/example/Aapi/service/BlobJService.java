@@ -38,10 +38,6 @@ public class BlobJService {
 	@Autowired
 	BlobJRepository blobJRepository;
 	
-	/** Reference to the String Format Helper */
-	@Autowired
-	StringFormatHelper stringFormatHelper;
-
 	/**
 	 * Save the blobJ in the database.
 	 * @param blobj blobJ to save
@@ -378,7 +374,7 @@ public class BlobJService {
 		
 		//regex : [a-zA-Z\\-]*\\s*Blob$
 		
-		String formattedName = stringFormatHelper.capitalizeFully(blobJToFormat.getName());
+		String formattedName = StringFormatHelper.capitalizeFully(blobJToFormat.getName());
 		
         if (!formattedName.matches("[a-zA-Z\\-]*\\s*Blob$")) {
         	StringBuilder message = new StringBuilder();
