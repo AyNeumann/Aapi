@@ -18,7 +18,7 @@ import com.example.Aapi.service.BlobJService;
  *
  */
 @Component
-public class DatabaseCleaner {
+public class DBCleaner {
 	
 	/** Reference to the log4j logger. */
 	private static final Logger LOG = LogManager.getLogger();
