@@ -37,9 +37,10 @@ public class DatabaseCleaner {
 		
 		LOG.info("Deleting non-compliant BlobJs");
 		
-		Page<BlobJ> blobjs = blobJService.retrieveAllBlobJs(pageNumber);
+		Integer numberOfPages = blobJService.retrieveAllBlobJs(pageNumber).getTotalPages();
 		
-		if(!blobjs.isEmpty()) {
+		for(Integer i = 0; i < numberOfPages; i++ ) {
+			Page<BlobJ> blobjs = blobJService.retrieveAllBlobJs(i);
 			for(BlobJ b : blobjs) {
 				if(b.getSign() == null || b.getSign().isEmpty()) {
 					StringBuilder message = new StringBuilder();
@@ -52,7 +53,6 @@ public class DatabaseCleaner {
 				}
 			}
 			pageNumber++;
-			blobJService.retrieveAllBlobJs(pageNumber);
 		}
 		
 		pageNumber = 0;
