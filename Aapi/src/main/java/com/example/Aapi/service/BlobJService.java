@@ -36,7 +36,7 @@ public class BlobJService {
 	
 	/** Reference to the BlobJRepository */
 	@Autowired
-	BlobJRepository blobJRepository;
+	private BlobJRepository blobJRepository;
 	
 	/**
 	 * Save the blobJ in the database.
