@@ -50,7 +50,7 @@ public class BlobJController {
 	
 	/** Reference to the BlobJRepository */
 	@Autowired
-	TagService tagService;
+	private TagService tagService;
 		
 	/**
 	 * Create a BlobJ and return saved BlobJ.
