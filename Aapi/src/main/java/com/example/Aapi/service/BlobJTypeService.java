@@ -22,10 +22,10 @@ public class BlobJTypeService {
 		
 		List<BlobJType> types = new ArrayList<BlobJType>();
 		
-		types.add(BlobJType.TYPE_A);
-		types.add(BlobJType.TYPE_B);
-		types.add(BlobJType.TYPE_C);
-		
+		for (BlobJType type : BlobJType.values()) { 
+			types.add(type);
+		}
+				
 		return types;
 	}
 
