@@ -1,6 +1,6 @@
 package com.example.Aapi.service;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.example.Aapi.dao.TagRepository;
 import com.example.Aapi.dto.Tag;
 import com.example.Aapi.exception.AapiEntityException;
+import com.example.Aapi.helper.StringFormatHelper;
 
 /**
  * Service for Tag
@@ -42,11 +43,11 @@ public class TagService {
 	 */
 	public Tag saveTag(final Tag tag) {
 		
-		checkTagName(tag.getName());
+		Tag tagToSave = formatTagData(tag);
 		
 		checkIfTagAlreadyExist(tag.getName());
 				
-		Tag savedTag = tagRepository.save(tag);
+		Tag savedTag = tagRepository.save(tagToSave);
 		
 		return savedTag;
 	}
@@ -58,12 +59,12 @@ public class TagService {
 	 */
 	public Iterable<Tag> saveAllTag(final List<Tag> tags) {
 		
-		Set<Tag> tagsToSave = new HashSet<Tag>();
+		List<Tag> tagsToSave = new ArrayList<Tag>();
 		
 		for(Tag t : tags) {
-			checkTagName(t.getName());
+			Tag tagToSave = formatTagData(t);
 			checkIfTagAlreadyExist(t.getName());
-			tagsToSave.add(t);
+			tagsToSave.add(tagToSave);
 		}
 		
 		Iterable<Tag> savedTag = tagRepository.saveAll(tagsToSave);
@@ -110,12 +111,29 @@ public class TagService {
 	 * @param name required name to find
 	 * @return a list of Tags with a name which contains the received name - Set<Tag>
 	 */
-	public Set<Tag> retrieveTagByName(final String name) {
+	public Set<Tag> findTagByName(final String name) {
 		
-		Set<Tag> tagToRetrieve = tagRepository.findByNameContainingOrderByNameAsc(name);
+		Set<Tag> tagsToRetrieve = tagRepository.findByNameContainingOrderByNameAsc(name);
 		
-		return tagToRetrieve;
+		return tagsToRetrieve;
 		
+	}
+	
+	public Tag retrieveTagByName(final String name) {
+		
+		String nametoRetrieve = StringFormatHelper.capitalize(name);
+				
+		Optional<Tag> tagToRetrieve = tagRepository.findByName(nametoRetrieve);
+		
+		if(!tagToRetrieve.isPresent()) {
+			StringBuilder message = new StringBuilder();
+			message.append("No Tag found with this name: ");
+			message.append(nametoRetrieve);
+			LOG.warn(message);
+			throw new AapiEntityException(message.toString());
+		}
+		
+		return tagToRetrieve.get();
 	}
 	
 	/**
@@ -168,13 +186,14 @@ public class TagService {
 		return isDeleted;
 	}
 	
-	private void checkTagName(String name) {
+	private Tag formatTagData(Tag tagToFormat) {
 		
-		if(!Character.isUpperCase(name.charAt(0))) {
-			String message = "Tag name must begin with an uppercase character";
-			LOG.warn(message);
-			throw new AapiEntityException(message);
+		if(!Character.isUpperCase(tagToFormat.getName().charAt(0))) {
+			String formattedName = StringFormatHelper.capitalize(tagToFormat.getName());
+			tagToFormat.setName(formattedName);
 		}
+		
+		return tagToFormat;
 	}
 
 	/**
@@ -183,16 +202,15 @@ public class TagService {
 	 * @param name name of the Tag to check
 	 */
 	private void checkIfTagAlreadyExist(String name) {
-		Set<Tag> tagsWithSimilarNames = retrieveTagByName(name);
+		Tag tagWithSameName = retrieveTagByName(name);
 		
-		for(Tag t : tagsWithSimilarNames) {
-			if(t.getName().trim().equalsIgnoreCase(name.trim())) {
-				StringBuilder message = new StringBuilder();
-				message.append("A Tag already exist with the name: ");
-				message.append(name);
-				LOG.warn(message);
-				throw new AapiEntityException(message.toString());
-			}
+		if(tagWithSameName != null) {
+			StringBuilder message = new StringBuilder();
+			message.append("A Tag already exist with the name: ");
+			message.append(name);
+			LOG.warn(message);
+			throw new AapiEntityException(message.toString());
 		}
+
 	}
 }
