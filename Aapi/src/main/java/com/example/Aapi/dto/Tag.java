@@ -10,6 +10,8 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -25,6 +27,7 @@ public class Tag {
     private Long id;
 	
 	/** Tag name.*/
+	@NaturalId(mutable = false)
     @NotNull
     @NotBlank
     private String name;
@@ -50,13 +53,6 @@ public class Tag {
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	/**

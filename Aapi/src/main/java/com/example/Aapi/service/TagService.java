@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.example.Aapi.dao.TagRepository;
 import com.example.Aapi.dto.Tag;
 import com.example.Aapi.exception.AapiEntityException;
-import com.example.Aapi.helper.StringFormatHelper;
 
 /**
  * Service for Tag
@@ -43,11 +42,11 @@ public class TagService {
 	 */
 	public Tag saveTag(final Tag tag) {
 		
+		checkTagName(tag.getName());
+		
 		checkIfTagAlreadyExist(tag.getName());
-		
-		Tag tagToSave = formatTagData(tag);
-		
-		Tag savedTag = tagRepository.save(tagToSave);
+				
+		Tag savedTag = tagRepository.save(tag);
 		
 		return savedTag;
 	}
@@ -62,8 +61,8 @@ public class TagService {
 		Set<Tag> tagsToSave = new HashSet<Tag>();
 		
 		for(Tag t : tags) {
+			checkTagName(t.getName());
 			checkIfTagAlreadyExist(t.getName());
-			formatTagData(t);
 			tagsToSave.add(t);
 		}
 		
@@ -168,6 +167,15 @@ public class TagService {
 				
 		return isDeleted;
 	}
+	
+	private void checkTagName(String name) {
+		
+		if(!Character.isUpperCase(name.charAt(0))) {
+			String message = "Tag name must begin with an uppercase character";
+			LOG.warn(message);
+			throw new AapiEntityException(message);
+		}
+	}
 
 	/**
 	 * Check if a tag with the same name already exist in the database.
@@ -187,19 +195,4 @@ public class TagService {
 			}
 		}
 	}
-	
-	/**
-	 * Format Tag data: capitalize name.
-	 * @param tagToFormat tag to format
-	 * @return formatted Tag - Tag
-	 */
-	private Tag formatTagData(Tag tagToFormat) {
-		
-		String formattedName = StringFormatHelper.capitalize(tagToFormat.getName());
-		
-		tagToFormat.setName(formattedName);
-		
-		return tagToFormat;
-	}
-
 }
