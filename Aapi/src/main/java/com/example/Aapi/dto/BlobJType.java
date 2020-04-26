@@ -14,5 +14,8 @@ public enum BlobJType {
 	TYPE_B,
 	
 	//Doesn't contains 'a' or 'b' in his name and an odd count letter number
-	TYPE_C;
+	TYPE_C,
+	
+	//Extra Blob
+	TYPE_X;
 }
