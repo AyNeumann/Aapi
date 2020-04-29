@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<String> handleTyMissmatchException(final MethodArgumentTypeMismatchException ex) {
 		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
-	
+		
 	/**
 	 * Exception handler for Aapi Entity Exception.
 	 * @param ex the thrown Aapi entity exception
@@ -52,8 +52,9 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(AapiEntityException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleAapiEntityException(final AapiEntityException ex) {
-		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	public ResponseEntity<AapiEntityException> handleAapiEntityException(final AapiEntityException ex) {
+		AapiEntityException exception = new AapiEntityException(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<AapiEntityException>(exception, exception.getHttpErrorNumber());
 	}
 	
 	/**
