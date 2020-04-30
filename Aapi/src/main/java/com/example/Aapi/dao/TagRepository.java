@@ -1,5 +1,6 @@
 package com.example.Aapi.dao;
 
+import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -22,7 +23,9 @@ import com.example.Aapi.dto.Tag;
 public interface TagRepository extends CrudRepository<Tag, Long>, PagingAndSortingRepository<Tag, Long> {
 	
 	Page<Tag> findAll(Pageable pageable);
-
+	
+	Optional<Tag> findByName(String name);
+	
 	Set<Tag> findByNameContainingOrderByNameAsc(String name);
 
 	/**

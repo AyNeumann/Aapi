@@ -29,7 +29,7 @@ public class Tag {
     @NotBlank
     private String name;
     
-    /** Many to may relationship with BlobJ. */
+	/** Many to may relationship with BlobJ. */
     @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     private Set<BlobJ> blobjs;
@@ -51,7 +51,7 @@ public class Tag {
 	public String getName() {
 		return name;
 	}
-
+	
 	/**
 	 * @param name the name to set
 	 */

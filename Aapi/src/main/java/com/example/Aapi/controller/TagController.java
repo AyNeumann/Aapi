@@ -108,9 +108,22 @@ public class TagController {
 	 * @return a list of Tags with a name which contains the received name - Set<Tag>
 	 */
 	@GetMapping("byName")
-	public Set<Tag> retrieveByName(@RequestParam(name="name", required = true ) final String name) {
+	public Set<Tag> findByName(@RequestParam(name="name", required = true ) final String name) {
 		
-		Set<Tag> tagToRetrieve = tagService.retrieveTagByName(name);
+		Set<Tag> tagToRetrieve = tagService.findTagByName(name);
+		
+		return tagToRetrieve;
+	}
+	
+	/**
+	 * Retrieve the Tags with an exact matching name. 
+	 * @param name required name to find
+	 * @return the Tag with an exact matching name. - Tag
+	 */
+	@GetMapping("retrieveByName")
+	public Tag retrieveByName(@RequestParam(name="name", required = true ) final String name) {
+		
+		Tag tagToRetrieve = tagService.retrieveTagByName(name);
 		
 		return tagToRetrieve;
 	}
