@@ -30,8 +30,9 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler({IllegalArgumentException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleException(final IllegalArgumentException ex) {
-		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	public ResponseEntity<AapiEntityException> handleIllegalArgumentException(final IllegalArgumentException ex) {
+		AapiEntityException exception = new AapiEntityException(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<AapiEntityException>(exception, HttpStatus.BAD_REQUEST);
 	}
 	
 	/**
@@ -41,14 +42,14 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler({MethodArgumentTypeMismatchException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleTyMissmatchException(final MethodArgumentTypeMismatchException ex) {
+	public ResponseEntity<String> handleTypeMissmatchException(final MethodArgumentTypeMismatchException ex) {
 		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 		
 	/**
 	 * Exception handler for Aapi Entity Exception.
 	 * @param ex the thrown Aapi entity exception
-	 * @return error message as a string
+	 * @return an exception with a message and a httpErrorNumber 
 	 */
 	@ExceptionHandler(AapiEntityException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -64,7 +65,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleConstraintViolationException(final ConstraintViolationException  ex) {
+	public ResponseEntity<AapiEntityException> handleConstraintViolationException(final ConstraintViolationException  ex) {
 		
 		//If there is multiple error constraintViolationException will contain multiple error message separated by commas
 		String defaultMessage = ex.getMessage();
@@ -80,8 +81,8 @@ public class GlobalExceptionHandler {
 		} else {
 			expMessage.append(formatAndLogExceptionMessage(defaultMessage));
 		}
-		
-		return new ResponseEntity<String>(expMessage.toString(), HttpStatus.BAD_REQUEST);
+		AapiEntityException exception = new AapiEntityException(expMessage.toString(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<AapiEntityException>(exception, HttpStatus.BAD_REQUEST);
 	}
 	
 	/**
