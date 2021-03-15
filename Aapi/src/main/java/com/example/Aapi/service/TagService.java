@@ -202,14 +202,9 @@ public class TagService {
 	 * @param name name of the Tag to check
 	 */
 	private void checkIfTagAlreadyExist(String name) {
-		Tag tagWithSameName = retrieveTagByName(name);
 		
-		if(tagWithSameName != null) {
-			StringBuilder message = new StringBuilder();
-			message.append("A Tag already exist with the name: ");
-			message.append(name);
-			LOG.warn(message);
-			throw new AapiEntityException(message.toString());
+		if(tagRepository.findByName(name).isPresent()) {
+			throw new AapiEntityException("A Tag already exist with the name: " + name);
 		}
 
 	}

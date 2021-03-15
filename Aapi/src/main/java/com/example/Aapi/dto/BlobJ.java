@@ -174,5 +174,4 @@ public class BlobJ {
 	public void setLinkedBlobJ(Set<BlobJ> linkedBlobJ) {
 		this.linkedBlobJ = linkedBlobJ;
 	}
-
 }

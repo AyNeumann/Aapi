@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
 	/**
 	 * Exception handler for Constraint Violation Exception.
 	 * @param ex thrown constraint violation exception
-	 * @return an error message as a string.
+	 * @return an exception with a message and a httpErrorNumber 
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

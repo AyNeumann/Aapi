@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,7 @@ import com.example.Aapi.service.TagService;
  */
 @Validated
 @RestController
-@RequestMapping("/blobj/")
+@RequestMapping("/blobjs-management")
 public class BlobJController {
 	
 	/** Reference to the log4j logger. */
@@ -58,7 +59,7 @@ public class BlobJController {
 	 * @param bindingResult spring framework validation interface
 	 * @return the saved BlobJ - BlobJ
 	 */
-	@PostMapping("save")
+	@PostMapping("/blobjs")
 	public BlobJ saveBlobJ(@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
 				
 		if (bindingResult.hasErrors()) {
@@ -68,7 +69,7 @@ public class BlobJController {
 		}
 		
 		BlobJ savedBlobJ = blobJService.saveBlobj(blobj);
-		
+
 		return savedBlobJ;
 	}
 	
@@ -81,7 +82,7 @@ public class BlobJController {
 	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return the saved BlobJs - Iterable<BlobJ>
 	 */
-	@PostMapping("saveAll")
+	@PostMapping("/saveAll")
 	public Iterable<BlobJ> saveAllBlobJs(@RequestBody @Valid final List<BlobJ> blobjs, final BindingResult bindingResult) {
 				
 		if (bindingResult.hasErrors()) {
@@ -100,7 +101,7 @@ public class BlobJController {
 	 * @param pageNumber number of the page requested - 0 base count
 	 * @return required page of BlobJ - Page<BlobJ>
 	 */
-	@GetMapping("all")
+	@GetMapping
 	public Page<BlobJ> retrieveAllBlobJs(@RequestParam(name="pageNumber", required = true ) final Integer pageNumber) {
 		
 		return blobJService.retrieveAllBlobJs(pageNumber);
@@ -111,8 +112,8 @@ public class BlobJController {
 	 * @param id id of the BlobJ to retrieve
 	 * @return found BlobJ - Optional<BlobJ>
 	 */
-	@GetMapping("byId")
-	public BlobJ retrieveById(@RequestParam(name="id", required = true ) final Long id) {
+	@GetMapping("blobjs/{id}")
+	public BlobJ retrieveById(@PathVariable(name="id", required = true ) final Long id) {
 		
 		BlobJ blobJToRetrieve = blobJService.retrieveById(id);
 		
@@ -124,7 +125,7 @@ public class BlobJController {
 	 * @param minCount minimal Count requested
 	 * @return a list of BlobJ with matching conditions - Set<BlobJ>
 	 */
-	@GetMapping("byCount")
+	@GetMapping("blobjs")
 	public Set<BlobJ> retrieveByCount(@RequestParam(name="count", required = true ) final Integer count) {
 		
 		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByCount(count, "exact");
@@ -138,7 +139,7 @@ public class BlobJController {
 	 * @param minCount minimal Count requested
 	 * @return a list of BlobJ with matching conditions - Set<BlobJ>
 	 */
-	@GetMapping("byCountMin")
+	@GetMapping("/byCountMin")
 	public Set<BlobJ> retrieveByCountMin(@RequestParam(name="minCount", required = true ) final Integer minCount) {
 		
 		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByCount(minCount, "min");
@@ -151,7 +152,7 @@ public class BlobJController {
 	 * @param minCount minimal Count requested
 	 * @return a list of BlobJ with matching conditions - Set<BlobJ>
 	 */
-	@GetMapping("byCountMax")
+	@GetMapping("/byCountMax")
 	public Set<BlobJ> retrieveByCountMax(@RequestParam(name="maxCount", required = true ) final Integer maxCount) {
 		
 		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByCount(maxCount, "max");
@@ -164,7 +165,7 @@ public class BlobJController {
 	 * @param minCount minimal Count requested
 	 * @return a list of BlobJ with matching conditions - Set<BlobJ>
 	 */
-	@GetMapping("byCountTranche")
+	@GetMapping("/byCountTranche")
 	public Set<BlobJ> retrieveByCountTranche(
 			@RequestParam(name="minCount", required = true ) final Integer minCount,
 			@RequestParam(name="maxCount", required = true ) final Integer maxCount) {
@@ -185,7 +186,7 @@ public class BlobJController {
 	 * @param name required name to find
 	 * @return a list of BlobJ with a name which contains the received name - Set<BlobJ>
 	 */
-	@GetMapping("byName")
+	@GetMapping("/byName")
 	public Set<BlobJ> retrieveByName(@RequestParam(name="name", required = true ) final String name) {
 		
 		Set<BlobJ> blobJsToRetrieve = blobJService.retrieveByName(name);
@@ -198,7 +199,7 @@ public class BlobJController {
 	 * @param type type of BlobJ to retrieve
 	 * @return all BlobJs with a matching type - Set<BlobJ>
 	 */
-	@GetMapping("byType")
+	@GetMapping("/byType")
 	public Set<BlobJ> retrieveByType(@RequestParam(name="type", required = true ) final BlobJType type) {
 				
 		Set<BlobJ> blobJsToRetrieve = blobJService.retrieveByType(type);
@@ -212,7 +213,7 @@ public class BlobJController {
 	 * @param bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
-	@PutMapping("update")
+	@PutMapping
 	public BlobJ updateBlobJ (@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
@@ -231,7 +232,7 @@ public class BlobJController {
 	 * @param id id of the BlobJ to delete
 	 * @return true if the BlobJ has been deleted
 	 */
-	@DeleteMapping("delete")
+	@DeleteMapping
 	public boolean deleteBlogJ (@RequestParam(name="id", required = true ) final Long id) {
 		
 		boolean isDeleted = blobJService.deleteBlobJ(id);
@@ -245,7 +246,7 @@ public class BlobJController {
 	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
-	@PutMapping("addTag")
+	@PutMapping("/addTag")
 	public BlobJ addTagToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
 		Tag tagToAdd = tagService.retrieveTagById(infos.getObjectId()).get();
@@ -261,7 +262,7 @@ public class BlobJController {
 	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
-	@PutMapping("deleteTag")
+	@PutMapping("/deleteTag")
 	public BlobJ deleteTagFromBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
 		Tag tagToDelete = tagService.retrieveTagById(infos.getObjectId()).get();
@@ -277,7 +278,7 @@ public class BlobJController {
 	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
-	@PutMapping("addBlobJ")
+	@PutMapping("/addBlobJ")
 	public BlobJ addLinkedBlobJToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
@@ -303,7 +304,7 @@ public class BlobJController {
 	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
-	@PutMapping("deleteBlobJ")
+	@PutMapping("/deleteBlobJ")
 	public BlobJ deleteLinkedBlobJFromBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
 		
 		BlobJ updatedBlobJ = blobJService.deleteLinkedBlobJFromBlobJ(infos.getBlobJId(), infos.getObjectId());
