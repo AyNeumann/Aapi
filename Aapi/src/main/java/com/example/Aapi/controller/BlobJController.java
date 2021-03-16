@@ -1,6 +1,7 @@
 package com.example.Aapi.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Aapi.dto.BlobJ;
 import com.example.Aapi.dto.BlobJType;
-import com.example.Aapi.dto.IdInfo;
 import com.example.Aapi.dto.Tag;
 import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
@@ -101,8 +102,8 @@ public class BlobJController {
 	 * @param pageNumber number of the page requested - 0 base count
 	 * @return required page of BlobJ - Page<BlobJ>
 	 */
-	@GetMapping
-	public Page<BlobJ> retrieveAllBlobJs(@RequestParam(name="pageNumber", required = true ) final Integer pageNumber) {
+	@GetMapping("/blobjs")
+	public Page<BlobJ> retrieveAllBlobJs(@RequestParam(name="page-number", required = true ) final Integer pageNumber) {
 		
 		return blobJService.retrieveAllBlobJs(pageNumber);
 	}
@@ -125,7 +126,7 @@ public class BlobJController {
 	 * @param minCount minimal Count requested
 	 * @return a list of BlobJ with matching conditions - Set<BlobJ>
 	 */
-	@GetMapping("blobjs")
+	@GetMapping("blobjs/count")
 	public Set<BlobJ> retrieveByCount(@RequestParam(name="count", required = true ) final Integer count) {
 		
 		Set<BlobJ> blobJsToRetrieve  = blobJService.retrieveByCount(count, "exact");
@@ -242,16 +243,17 @@ public class BlobJController {
 	
 	/**
 	 * Add a Tag to a BlobJ
- 	 * @param IdInfo IdInfo containing the id of the BlobJ to update and the Id of the Tag to add
-	 * @param bindingResult bindingResult spring framework validation interface
+ 	 * @param blobId id of the BlobJ to update
+ 	 * @param tagId id of the tag to add
 	 * @return updated BlobJ
 	 */
-	@PutMapping("/addTag")
-	public BlobJ addTagToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
+	@PatchMapping("/blobjs/{blobId}/tag/{tagId}")
+	public BlobJ addTagToBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
+			@PathVariable(name="tagId", required = true ) final Long tagId) {
 		
-		Tag tagToAdd = tagService.retrieveTagById(infos.getObjectId()).get();
+		Tag tagToAdd = tagService.retrieveTagById(tagId).get();
 		
-		BlobJ updatedBlobJ = blobJService.addTagToBlobJ(infos.getBlobJId(), tagToAdd);
+		BlobJ updatedBlobJ = blobJService.addTagToBlobJ(blobId, tagToAdd);
 		
 		return updatedBlobJ;
 	}
@@ -262,12 +264,13 @@ public class BlobJController {
 	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
-	@PutMapping("/deleteTag")
-	public BlobJ deleteTagFromBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
+	@DeleteMapping("/blobjs/{blobId}/tag/{tagId}")
+	public BlobJ deleteTagFromBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
+			@PathVariable(name="tagId", required = true ) final Long tagId) {
 		
-		Tag tagToDelete = tagService.retrieveTagById(infos.getObjectId()).get();
+		Tag tagToDelete = tagService.retrieveTagById(tagId).get();
 		
-		BlobJ updatedBlobJ = blobJService.deleteTagFromBlobJ(infos.getBlobJId(), tagToDelete);
+		BlobJ updatedBlobJ = blobJService.deleteTagFromBlobJ(blobId, tagToDelete);
 		
 		return updatedBlobJ;
 	}
@@ -278,22 +281,17 @@ public class BlobJController {
 	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
-	@PutMapping("/addBlobJ")
-	public BlobJ addLinkedBlobJToBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
+	@PatchMapping("/blobjs/{blobId}/linked-blobj/{linkedId}")
+	public BlobJ addLinkedBlobJToBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
+			@PathVariable(name="linkedId", required = true ) final Long linkedId) {
 		
-		if (bindingResult.hasErrors()) {
-			String message = "Attempt to add a linked BlobJ with invalid data.";
-			LOG.warn(message);
-			throw new IllegalArgumentException(message);
-		}
-		
-		if(infos.getBlobJId() == infos.getObjectId()) {
+		if(blobId == linkedId) {
 			String message = "A BlobJ cannot be linked to itself";
 			LOG.info(message);
 			throw new AapiEntityException(message.toString());
 		}
 		
-		BlobJ updatedBlobJ = blobJService.addLinkedBlobJToBlobJ(infos.getBlobJId(), infos.getObjectId());
+		BlobJ updatedBlobJ = blobJService.addLinkedBlobJToBlobJ(blobId, linkedId);
 		
 		return updatedBlobJ;
 	}
@@ -304,11 +302,23 @@ public class BlobJController {
 	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return updated BlobJ
 	 */
-	@PutMapping("/deleteBlobJ")
-	public BlobJ deleteLinkedBlobJFromBlobJ(@RequestBody @Valid final IdInfo infos, final BindingResult bindingResult) {
+	@DeleteMapping("/blobjs/{blobId}/linked-blobj/{linkedId}")
+	public BlobJ deleteLinkedBlobJFromBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
+			@PathVariable(name="linkedId", required = true ) final Long linkedId) {
 		
-		BlobJ updatedBlobJ = blobJService.deleteLinkedBlobJFromBlobJ(infos.getBlobJId(), infos.getObjectId());
+		BlobJ updatedBlobJ = blobJService.deleteLinkedBlobJFromBlobJ(blobId, linkedId);
 		
 		return updatedBlobJ;
+	}
+	
+	/**
+	 * TEST ENDPOINT
+	 * TODO: delete this end point
+	 * @param allParams
+	 * @return
+	 */
+	@GetMapping("/blobjs/test")
+	public String test(@RequestParam Map<String, String> allParams) {
+		return "Parameters are " + allParams.entrySet();
 	}
 }

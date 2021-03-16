@@ -24,7 +24,7 @@ import com.example.Aapi.dto.Tag;
 import com.example.Aapi.service.TagService;
 
 @RestController
-@RequestMapping("/tag/")
+@RequestMapping("/tag")
 public class TagController {
 	
 	/** Reference to the log4j logger. */
@@ -40,7 +40,7 @@ public class TagController {
 	 * @param bindingResult spring framework validation interface
 	 * @return the saved Tag
 	 */
-	@PostMapping("save")
+	@PostMapping
 	public Tag saveTag(@RequestBody @Valid final Tag tag, final BindingResult bindingResult) {
 				
 		if (bindingResult.hasErrors()) {
@@ -82,7 +82,7 @@ public class TagController {
 	 * @param pageNumber number of the page requested - 0 base count
 	 * @return required page of Tag - Page<Tag>
 	 */
-	@GetMapping("all")
+	@GetMapping
 	public Page<Tag> retrieveAllTags(@RequestParam(name="pageNumber", required = true ) final Integer pageNumber) {
 		
 		return tagService.retrieveAllTags(pageNumber);
@@ -134,7 +134,7 @@ public class TagController {
 	 * @param bindingResult spring framework validation interface
 	 * @return updated tag or null if tag hasn't been updated - Tag
 	 */
-	@PutMapping("update")
+	@PutMapping
 	public Tag updateTag (@RequestBody @Valid final Tag tag, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
@@ -153,7 +153,7 @@ public class TagController {
 	 * @param id id of the Tag to delete
 	 * @return true if the Tag has been deleted
 	 */
-	@DeleteMapping("delete")
+	@DeleteMapping
 	public boolean deleteTag (@RequestParam(name="id", required = true ) final Long id) {
 		
 		boolean isDeleted = tagService.deleteTag(id);

@@ -16,7 +16,7 @@ import com.example.Aapi.service.BlobJTypeService;
  *
  */
 @RestController
-@RequestMapping("/type/")
+@RequestMapping("/types-management")
 public class BlobJTypeController {
 	
 	@Autowired
@@ -26,7 +26,7 @@ public class BlobJTypeController {
 	 * Retrieve all BlobJ types
 	 * @return all BlobJ types - List<BlobJType>
 	 */
-	@GetMapping("all")
+	@GetMapping
 	public List<BlobJType> retrieveAllTypes() {
 		
 		List<BlobJType> types = blobJTypeService.getAllTypes();
