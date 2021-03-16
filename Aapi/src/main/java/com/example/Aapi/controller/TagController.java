@@ -1,7 +1,6 @@
 package com.example.Aapi.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -13,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +24,7 @@ import com.example.Aapi.dto.Tag;
 import com.example.Aapi.service.TagService;
 
 @RestController
-@RequestMapping("/tag")
+@RequestMapping("/tags-management")
 public class TagController {
 	
 	/** Reference to the log4j logger. */
@@ -94,10 +94,10 @@ public class TagController {
 	 * @param id id of the Tag to retrieve
 	 * @return found Tag - Optional<Tag>
 	 */
-	@GetMapping("byId")
-	public Optional<Tag> retrieveById(@RequestParam(name="id", required = true ) final Long id) {
+	@GetMapping("tags/{id}")
+	public Tag retrieveById(@PathVariable(name="id", required = true ) final Long id) {
 		
-		Optional<Tag> tagToRetrieve = tagService.retrieveTagById(id);
+		Tag tagToRetrieve = tagService.retrieveTagById(id);
 		
 		return tagToRetrieve;
 	}

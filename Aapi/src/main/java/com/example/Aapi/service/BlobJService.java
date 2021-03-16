@@ -2,7 +2,6 @@ package com.example.Aapi.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -95,17 +94,11 @@ public class BlobJService {
 	 */
 	public BlobJ retrieveById(Long id) {
 		
-		Optional<BlobJ> blobJToRetrieve = blobJRepository.findById(id);
-		
-		if(!blobJToRetrieve.isPresent()) {
-			StringBuilder message = new StringBuilder();
-			message.append("No BlobJ found with this id: ");
-			message.append(id);
-			LOG.warn(message);
-			throw new AapiEntityException(message.toString());
-		}
-		
-		return blobJToRetrieve.get();
+		BlobJ blobJToRetrieve = blobJRepository.findById(id).orElseThrow(
+				() -> new AapiEntityException("No BlobJ found with this id: " + id)
+		);
+				
+		return blobJToRetrieve;
 	}
 	
 	/**
@@ -202,7 +195,7 @@ public class BlobJService {
 	public boolean deleteBlobJ(Long id) {
 		
 		boolean isDeleted = false;
-		
+				
 		if(!blobJRepository.existsById(id)) {
 			StringBuilder message = new StringBuilder();
 			message.append("No BlobJ found with this id: ");

@@ -32,6 +32,7 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<AapiEntityException> handleIllegalArgumentException(final IllegalArgumentException ex) {
 		AapiEntityException exception = new AapiEntityException(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		LOG.warn(ex.getMessage());
 		return new ResponseEntity<AapiEntityException>(exception, HttpStatus.BAD_REQUEST);
 	}
 	

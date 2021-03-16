@@ -91,18 +91,12 @@ public class TagService {
 	 * @param id id of the Tag to retrieve
 	 * @return found Tag - Optional<Tag>
 	 */
-	public Optional<Tag> retrieveTagById(final Long id) {
+	public Tag retrieveTagById(final Long id) {
 		
-		Optional<Tag> tagToRetrieve = tagRepository.findById(id);
-		
-		if(!tagToRetrieve.isPresent()) {
-			StringBuilder message = new StringBuilder();
-			message.append("No Tag found with this id: ");
-			message.append(id);
-			LOG.warn(message);
-			throw new AapiEntityException(message.toString());
-		}
-		
+		Tag tagToRetrieve = tagRepository.findById(id).orElseThrow(
+				() -> new AapiEntityException("No Tag found with this id: " + id)
+		);
+				
 		return tagToRetrieve;
 	}
 	

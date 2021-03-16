@@ -251,7 +251,7 @@ public class BlobJController {
 	public BlobJ addTagToBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
 			@PathVariable(name="tagId", required = true ) final Long tagId) {
 		
-		Tag tagToAdd = tagService.retrieveTagById(tagId).get();
+		Tag tagToAdd = tagService.retrieveTagById(tagId);
 		
 		BlobJ updatedBlobJ = blobJService.addTagToBlobJ(blobId, tagToAdd);
 		
@@ -268,7 +268,7 @@ public class BlobJController {
 	public BlobJ deleteTagFromBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
 			@PathVariable(name="tagId", required = true ) final Long tagId) {
 		
-		Tag tagToDelete = tagService.retrieveTagById(tagId).get();
+		Tag tagToDelete = tagService.retrieveTagById(tagId);
 		
 		BlobJ updatedBlobJ = blobJService.deleteTagFromBlobJ(blobId, tagToDelete);
 		
