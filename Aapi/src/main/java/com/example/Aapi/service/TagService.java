@@ -15,7 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Aapi.dao.TagRepository;
-import com.example.Aapi.dto.Tag;
+import com.example.Aapi.entity.Tag;
 import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.helper.StringFormatHelper;
 

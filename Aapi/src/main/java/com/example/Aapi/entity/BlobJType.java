@@ -1,4 +1,4 @@
-package com.example.Aapi.dto;
+package com.example.Aapi.entity;
 
 /**
  * BlobJ type enumerator. BlobJ can only have one of the value.

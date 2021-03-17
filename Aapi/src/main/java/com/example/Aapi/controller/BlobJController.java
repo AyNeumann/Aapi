@@ -23,13 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Aapi.dto.BlobJ;
-import com.example.Aapi.dto.BlobJType;
-import com.example.Aapi.dto.Tag;
+import com.example.Aapi.entity.BlobJ;
+import com.example.Aapi.entity.BlobJType;
+import com.example.Aapi.entity.Tag;
 import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
 import com.example.Aapi.service.TagService;
 
+//TODO: Implement DTO and map struct
 //TODO: Rank could be null. If so auto-generate rank
 //TODO: Implement unit test
 

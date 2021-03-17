@@ -13,8 +13,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.Aapi.dto.BlobJ;
-import com.example.Aapi.dto.BlobJType;
+import com.example.Aapi.entity.BlobJ;
+import com.example.Aapi.entity.BlobJType;
 
 
 /**
@@ -25,19 +25,19 @@ import com.example.Aapi.dto.BlobJType;
 public interface BlobJRepository extends CrudRepository<BlobJ, Long>, PagingAndSortingRepository<BlobJ, Long> {
 
 	Page<BlobJ> findAll(Pageable pageable);
-	
+
 	Set<BlobJ> findByCount(Integer count);
-	
+
 	Set<BlobJ> findByCountGreaterThanEqual(int minCount);
-	
+
 	Set<BlobJ> findByCountLessThanEqual(int maxCount);
-	
+
 	Set<BlobJ> findByCountGreaterThanEqualAndCountLessThanEqualOrderByCountAsc(int minCount, int maxCount);
-		
+
 	Set<BlobJ> findByNameContainingOrderByNameAsc(String name);
-	
+
 	Set<BlobJ> findByTypeOrderByNameAsc(BlobJType type);
-	
+
 	/**
 	 * Update the BloBJ with the matching id.
 	 * @param blobJid id of the BlobJ to update
@@ -55,5 +55,5 @@ public interface BlobJRepository extends CrudRepository<BlobJ, Long>, PagingAndS
 			@Param("blobJcount") Integer blobJcount,
 			@Param("blobJtype") BlobJType blobJtype
 			);
-	
+
 }

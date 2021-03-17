@@ -53,9 +53,9 @@ public class GlobalExceptionHandler {
 	 * @return an exception with a message and a httpErrorNumber 
 	 */
 	@ExceptionHandler(AapiEntityException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<AapiEntityException> handleAapiEntityException(final AapiEntityException ex) {
-		AapiEntityException exception = new AapiEntityException(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		AapiEntityException exception = new AapiEntityException(ex.getMessage(), HttpStatus.NOT_FOUND);
 		return new ResponseEntity<AapiEntityException>(exception, exception.getHttpErrorNumber());
 	}
 	

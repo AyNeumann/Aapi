@@ -14,9 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Aapi.dao.BlobJRepository;
-import com.example.Aapi.dto.BlobJ;
-import com.example.Aapi.dto.BlobJType;
-import com.example.Aapi.dto.Tag;
+import com.example.Aapi.entity.BlobJ;
+import com.example.Aapi.entity.BlobJType;
+import com.example.Aapi.entity.Tag;
 import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.helper.StringFormatHelper;
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Aapi.dto.BlobJType;
+import com.example.Aapi.entity.BlobJType;
 import com.example.Aapi.service.BlobJTypeService;
 
 /**

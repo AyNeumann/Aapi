@@ -1,4 +1,4 @@
-package com.example.Aapi.dto;
+package com.example.Aapi.entity;
 
 import java.util.Set;
 

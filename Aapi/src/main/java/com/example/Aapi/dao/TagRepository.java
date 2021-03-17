@@ -13,7 +13,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.example.Aapi.dto.Tag;
+import com.example.Aapi.entity.Tag;
 
 /**
  * Tag repository

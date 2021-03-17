@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.example.Aapi.dto.BlobJ;
+import com.example.Aapi.entity.BlobJ;
 import com.example.Aapi.service.BlobJService;
 
 /**

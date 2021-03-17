@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.Aapi.dto.BlobJType;
+import com.example.Aapi.entity.BlobJType;
 
 /**
  * Service for Blob types
