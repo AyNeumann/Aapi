@@ -37,10 +37,10 @@ public class DBCleaner {
 		
 		LOG.info("Deleting non-compliant BlobJs");
 		
-		Integer numberOfPages = blobJService.retrieveAllBlobJs(pageNumber).getTotalPages();
+		Integer numberOfPages = blobJService.retrieveAllBlobJsEntity(pageNumber).getTotalPages();
 		
 		for(Integer i = 0; i < numberOfPages; i++ ) {
-			Page<BlobJ> blobjs = blobJService.retrieveAllBlobJs(i);
+			Page<BlobJ> blobjs = blobJService.retrieveAllBlobJsEntity(i);
 			for(BlobJ b : blobjs) {
 				if(b.getSign() == null || b.getSign().isEmpty()) {
 					StringBuilder message = new StringBuilder();

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Aapi.dto.TagDTO;
 import com.example.Aapi.entity.Tag;
 import com.example.Aapi.service.TagService;
 
@@ -95,9 +96,9 @@ public class TagController {
 	 * @return found Tag - Optional<Tag>
 	 */
 	@GetMapping("tags/{id}")
-	public Tag retrieveById(@PathVariable(name="id", required = true ) final Long id) {
+	public TagDTO retrieveById(@PathVariable(name="id", required = true ) final Long id) {
 		
-		Tag tagToRetrieve = tagService.retrieveTagById(id);
+		TagDTO tagToRetrieve = tagService.retrieveTagById(id);
 		
 		return tagToRetrieve;
 	}

@@ -1,5 +1,6 @@
 package com.example.Aapi.mapper;
 
+import java.util.List;
 import java.util.Set;
 
 import org.mapstruct.Mapper;
@@ -18,8 +19,11 @@ public interface BlobJMapper {
 	BlobJ blobJDTOtoBlobJEntity(BlobJDTO dto);
 	BlobJDTO blobJEntityToBlobJDTO(BlobJ entity);
 	
-	Set<BlobJ> convertBlobJDTOListToBlobJEntityList(Set<BlobJDTO> list);
-	Set<BlobJDTO> convertBlobJEntityListToBlobJDTOList(Set<BlobJ> list);
+	Set<BlobJ> convertBlobJDTOSetToBlobJEntitySet(Set<BlobJDTO> list);
+	Set<BlobJDTO> convertBlobJEntitySetToBlobJDTOSet(Set<BlobJ> list);
+	
+	List<BlobJ> convertBlobJDTOListToBlobJEntityList(List<BlobJDTO> list);
+	List<BlobJDTO> convertBlobJEntityListToBlobJDTOList(List<BlobJ> list);
 	
 	Tag tagDTOToTagEntity(TagDTO dto);
 	TagDTO tagEntityToTagDTo(Tag entity);

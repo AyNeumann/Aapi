@@ -15,9 +15,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Aapi.dao.TagRepository;
+import com.example.Aapi.dto.TagDTO;
 import com.example.Aapi.entity.Tag;
 import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.helper.StringFormatHelper;
+import com.example.Aapi.mapper.TagMapper;
 
 /**
  * Service for Tag
@@ -35,6 +37,9 @@ public class TagService {
 	/** Reference to the Tag Repository */
 	@Autowired
 	TagRepository tagRepository;
+	
+	@Autowired
+	TagMapper tagMapper;
 		
 	/**
 	 * Save the Tag in the database.
@@ -91,13 +96,15 @@ public class TagService {
 	 * @param id id of the Tag to retrieve
 	 * @return found Tag - Optional<Tag>
 	 */
-	public Tag retrieveTagById(final Long id) {
+	public TagDTO retrieveTagById(final Long id) {
 		
 		Tag tagToRetrieve = tagRepository.findById(id).orElseThrow(
 				() -> new AapiEntityException("No Tag found with this id: " + id)
 		);
+		
+		TagDTO retrievedTag = tagMapper.tagEntityToTagDTo(tagToRetrieve);
 				
-		return tagToRetrieve;
+		return retrievedTag;
 	}
 	
 	/**

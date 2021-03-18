@@ -9,7 +9,7 @@ import com.example.Aapi.dto.TagDTO;
 import com.example.Aapi.entity.BlobJ;
 import com.example.Aapi.entity.Tag;
 
-@Mapper
+@Mapper(componentModel="spring")
 public interface TagMapper {
 	
 	Tag tagDTOToTagEntity(TagDTO dto);

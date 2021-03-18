@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Aapi.dto.BlobJDTO;
+import com.example.Aapi.dto.TagDTO;
 import com.example.Aapi.entity.BlobJ;
 import com.example.Aapi.entity.BlobJType;
-import com.example.Aapi.entity.Tag;
 import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
 import com.example.Aapi.service.TagService;
@@ -86,7 +86,7 @@ public class BlobJController {
 	 * @return the saved BlobJs - Set<BlobJ>
 	 */
 	@PostMapping("/saveAll")
-	public Set<BlobJDTO> saveAllBlobJs(@RequestBody @Valid final List<BlobJDTO> blobjs, final BindingResult bindingResult) {
+	public List<BlobJDTO> saveAllBlobJs(@RequestBody @Valid final List<BlobJDTO> blobjs, final BindingResult bindingResult) {
 				
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a BlobJs with an invalid list.";
@@ -94,7 +94,7 @@ public class BlobJController {
 			throw new IllegalArgumentException(message);
 		}
 							
-		Set<BlobJDTO> savedBlobJ = blobJService.saveAllBlobj(blobjs);
+		List<BlobJDTO> savedBlobJ = blobJService.saveAllBlobj(blobjs);
 				
 		return savedBlobJ;
 	}
@@ -105,7 +105,7 @@ public class BlobJController {
 	 * @return required page of BlobJ - Page<BlobJ>
 	 */
 	@GetMapping("/blobjs")
-	public Page<BlobJ> retrieveAllBlobJs(@RequestParam(name="page-number", required = true ) final Integer pageNumber) {
+	public Page<BlobJDTO> retrieveAllBlobJs(@RequestParam(name="page-number", required = true ) final Integer pageNumber) {
 		
 		return blobJService.retrieveAllBlobJs(pageNumber);
 	}
@@ -116,9 +116,9 @@ public class BlobJController {
 	 * @return found BlobJ - Optional<BlobJ>
 	 */
 	@GetMapping("blobjs/{id}")
-	public BlobJ retrieveById(@PathVariable(name="id", required = true ) final Long id) {
+	public BlobJDTO retrieveById(@PathVariable(name="id", required = true ) final Long id) {
 		
-		BlobJ blobJToRetrieve = blobJService.retrieveById(id);
+		BlobJDTO blobJToRetrieve = blobJService.retrieveById(id);
 		
 		return blobJToRetrieve;
 	}
@@ -217,7 +217,7 @@ public class BlobJController {
 	 * @return updated BlobJ
 	 */
 	@PutMapping
-	public BlobJ updateBlobJ (@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
+	public BlobJDTO updateBlobJ (@RequestBody @Valid final BlobJDTO blobj, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to udpate a Blobj with invalid data.";
@@ -225,7 +225,7 @@ public class BlobJController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		BlobJ udpatedBlobJ = blobJService.updateBlobJ(blobj);
+		BlobJDTO udpatedBlobJ = blobJService.updateBlobJ(blobj);
 		
 		return udpatedBlobJ;
 	}
@@ -235,8 +235,8 @@ public class BlobJController {
 	 * @param id id of the BlobJ to delete
 	 * @return true if the BlobJ has been deleted
 	 */
-	@DeleteMapping
-	public boolean deleteBlogJ (@RequestParam(name="id", required = true ) final Long id) {
+	@DeleteMapping("/blobjs/{id}")
+	public boolean deleteBlogJ (@PathVariable(name="id", required = true ) final Long id) {
 		
 		boolean isDeleted = blobJService.deleteBlobJ(id);
 		
@@ -250,12 +250,12 @@ public class BlobJController {
 	 * @return updated BlobJ
 	 */
 	@PatchMapping("/blobjs/{blobId}/tag/{tagId}")
-	public BlobJ addTagToBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
+	public BlobJDTO addTagToBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
 			@PathVariable(name="tagId", required = true ) final Long tagId) {
 		
-		Tag tagToAdd = tagService.retrieveTagById(tagId);
+		TagDTO tagToAdd = tagService.retrieveTagById(tagId);
 		
-		BlobJ updatedBlobJ = blobJService.addTagToBlobJ(blobId, tagToAdd);
+		BlobJDTO updatedBlobJ = blobJService.addTagToBlobJ(blobId, tagToAdd);
 		
 		return updatedBlobJ;
 	}
@@ -267,12 +267,12 @@ public class BlobJController {
 	 * @return updated BlobJ
 	 */
 	@DeleteMapping("/blobjs/{blobId}/tag/{tagId}")
-	public BlobJ deleteTagFromBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
+	public BlobJDTO deleteTagFromBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
 			@PathVariable(name="tagId", required = true ) final Long tagId) {
 		
-		Tag tagToDelete = tagService.retrieveTagById(tagId);
+		TagDTO tagToDelete = tagService.retrieveTagById(tagId);
 		
-		BlobJ updatedBlobJ = blobJService.deleteTagFromBlobJ(blobId, tagToDelete);
+		BlobJDTO updatedBlobJ = blobJService.deleteTagFromBlobJ(blobId, tagToDelete);
 		
 		return updatedBlobJ;
 	}
@@ -284,7 +284,7 @@ public class BlobJController {
 	 * @return updated BlobJ
 	 */
 	@PatchMapping("/blobjs/{blobId}/linked-blobj/{linkedId}")
-	public BlobJ addLinkedBlobJToBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
+	public BlobJDTO addLinkedBlobJToBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
 			@PathVariable(name="linkedId", required = true ) final Long linkedId) {
 		
 		if(blobId == linkedId) {
@@ -293,7 +293,7 @@ public class BlobJController {
 			throw new AapiEntityException(message.toString());
 		}
 		
-		BlobJ updatedBlobJ = blobJService.addLinkedBlobJToBlobJ(blobId, linkedId);
+		BlobJDTO updatedBlobJ = blobJService.addLinkedBlobJToBlobJ(blobId, linkedId);
 		
 		return updatedBlobJ;
 	}
@@ -305,12 +305,11 @@ public class BlobJController {
 	 * @return updated BlobJ
 	 */
 	@DeleteMapping("/blobjs/{blobId}/linked-blobj/{linkedId}")
-	public BlobJ deleteLinkedBlobJFromBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
+	public BlobJDTO deleteLinkedBlobJFromBlobJ(@PathVariable(name="blobId", required = true ) final Long blobId,
 			@PathVariable(name="linkedId", required = true ) final Long linkedId) {
 		
-		BlobJ updatedBlobJ = blobJService.deleteLinkedBlobJFromBlobJ(blobId, linkedId);
+		return blobJService.deleteLinkedBlobJFromBlobJ(blobId, linkedId);
 		
-		return updatedBlobJ;
 	}
 	
 	/**
