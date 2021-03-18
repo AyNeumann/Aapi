@@ -37,7 +37,7 @@ public interface BlobJRepository extends CrudRepository<BlobJ, Long>, PagingAndS
 	Set<BlobJ> findByNameContainingOrderByNameAsc(String name);
 
 	Set<BlobJ> findByTypeOrderByNameAsc(BlobJType type);
-
+	
 	/**
 	 * Update the BloBJ with the matching id.
 	 * @param blobJid id of the BlobJ to update

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Aapi.dto.BlobJDTO;
 import com.example.Aapi.entity.BlobJ;
 import com.example.Aapi.entity.BlobJType;
 import com.example.Aapi.entity.Tag;
@@ -62,7 +63,7 @@ public class BlobJController {
 	 * @return the saved BlobJ - BlobJ
 	 */
 	@PostMapping("/blobjs")
-	public BlobJ saveBlobJ(@RequestBody @Valid final BlobJ blobj, final BindingResult bindingResult) {
+	public BlobJDTO saveBlobJ(@RequestBody @Valid final BlobJDTO blobj, final BindingResult bindingResult) {
 				
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a Blobj with invalid data.";
@@ -70,7 +71,7 @@ public class BlobJController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		BlobJ savedBlobJ = blobJService.saveBlobj(blobj);
+		BlobJDTO savedBlobJ = blobJService.saveBlobj(blobj);
 
 		return savedBlobJ;
 	}
@@ -82,10 +83,10 @@ public class BlobJController {
 	 * If one of the item of the list is invalid throws ConstraintViolationException.
  	 * @param blobj BloBJs to save
 	 * @param bindingResult bindingResult spring framework validation interface
-	 * @return the saved BlobJs - Iterable<BlobJ>
+	 * @return the saved BlobJs - Set<BlobJ>
 	 */
 	@PostMapping("/saveAll")
-	public Iterable<BlobJ> saveAllBlobJs(@RequestBody @Valid final List<BlobJ> blobjs, final BindingResult bindingResult) {
+	public Set<BlobJDTO> saveAllBlobJs(@RequestBody @Valid final List<BlobJDTO> blobjs, final BindingResult bindingResult) {
 				
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a BlobJs with an invalid list.";
@@ -93,7 +94,7 @@ public class BlobJController {
 			throw new IllegalArgumentException(message);
 		}
 							
-		Iterable<BlobJ> savedBlobJ = blobJService.saveAllBlobj(blobjs);
+		Set<BlobJDTO> savedBlobJ = blobJService.saveAllBlobj(blobjs);
 				
 		return savedBlobJ;
 	}

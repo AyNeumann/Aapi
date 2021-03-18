@@ -5,9 +5,7 @@ import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.example.Aapi.entity.BlobJ;
 import com.example.Aapi.entity.BlobJType;
-import com.example.Aapi.entity.Tag;
 
 public class BlobJDTO {
 
@@ -35,10 +33,10 @@ public class BlobJDTO {
     private BlobJType type;
     
 	/** Many to many relationship with tags. */
-    private Set<Tag> tags;
+    private Set<TagDTO> tags;
     
     /** Many to many relationship with linkedBlobJ. */
-    private Set<BlobJ> linkedBlobJ;
+    private Set<BlobJDTO> linkedBlobJ;
     
 	/*
      * Override method toString
@@ -58,6 +56,13 @@ public class BlobJDTO {
 	 */
 	public Long getId() {
 		return id;
+	}
+	
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
     /**
@@ -133,28 +138,28 @@ public class BlobJDTO {
 	/**
 	 * @return the tags
 	 */
-	public Set<Tag> getTags() {
+	public Set<TagDTO> getTags() {
 		return tags;
 	}
 
 	/**
 	 * @param tags the tags to set
 	 */
-	public void setTags(Set<Tag> tags) {
+	public void setTags(Set<TagDTO> tags) {
 		this.tags = tags;
 	}
 	
 	/**
 	 * @return the linkedBlobJ
 	 */
-	public Set<BlobJ> getLinkedBlobJ() {
+	public Set<BlobJDTO> getLinkedBlobJ() {
 		return linkedBlobJ;
 	}
 
 	/**
 	 * @param linkedBlobJ the linkedBlobJ to set
 	 */
-	public void setLinkedBlobJ(Set<BlobJ> linkedBlobJ) {
+	public void setLinkedBlobJ(Set<BlobJDTO> linkedBlobJ) {
 		this.linkedBlobJ = linkedBlobJ;
 	}
 }

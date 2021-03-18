@@ -6,7 +6,6 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.example.Aapi.entity.BlobJ;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class TagDTO {
@@ -22,9 +21,9 @@ public class TagDTO {
     
 	/** Many to may relationship with BlobJ. */
     @JsonIgnore
-    private Set<BlobJ> blobjs;
+    private Set<BlobJDTO> blobjs;
     
-    /*
+	/*
      * Override method toSTring.
      */
     @Override
@@ -34,6 +33,21 @@ public class TagDTO {
                 ", name='" + name + '\'' +
                 '}';
     }
+    
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+	
+	
+    /**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
     
     /**
 	 * @return the name
@@ -48,12 +62,19 @@ public class TagDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+    /**
+	 * @return the blobjs
+	 */
+	public Set<BlobJDTO> getBlobjs() {
+		return blobjs;
+	}
 
 	/**
-	 * @return the id
+	 * @param blobjs the blobjs to set
 	 */
-	public Long getId() {
-		return id;
+	public void setBlobjs(Set<BlobJDTO> blobjs) {
+		this.blobjs = blobjs;
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.example.Aapi.service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,11 +14,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Aapi.dao.BlobJRepository;
+import com.example.Aapi.dto.BlobJDTO;
 import com.example.Aapi.entity.BlobJ;
 import com.example.Aapi.entity.BlobJType;
 import com.example.Aapi.entity.Tag;
 import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.helper.StringFormatHelper;
+import com.example.Aapi.mapper.BlobJMapper;
 
 /**
  * Service for Blob
@@ -37,20 +39,29 @@ public class BlobJService {
 	@Autowired
 	private BlobJRepository blobJRepository;
 	
+	@Autowired
+	private BlobJMapper blobJMapper;
+	
 	/**
 	 * Save the blobJ in the database.
 	 * @param blobj blobJ to save
 	 * @return savedBlobJ - BlobJ
 	 */
-	public BlobJ saveBlobj(final BlobJ blobj) {
+	public BlobJDTO saveBlobj(final BlobJDTO blobj) {
 				
 		checkIfBlobJAlreadyExist(blobj.getName());
 		
-		BlobJ blobJToSave = checkAndFormatBlobJData(blobj);
+		BlobJDTO blobJToSave = checkAndFormatBlobJData(blobj);
 		
-		BlobJ savedBlob = blobJRepository.save(blobJToSave);
+		BlobJ entity = blobJMapper.blobJDTOtoBlobJEntity(blobJToSave);
 		
-		return savedBlob;
+		BlobJ savedBlob = blobJRepository.save(entity);
+		LOG.info("Saved Blob Entity: " + savedBlob);
+		
+		BlobJDTO savedBlobDTO = blobJMapper.blobJEntityToBlobJDTO(savedBlob);
+		LOG.info("Saved Blob DTO: " + savedBlobDTO);
+		
+		return savedBlobDTO;
 	}
 	
 	/**
@@ -58,19 +69,23 @@ public class BlobJService {
 	 * @param blobjs BloBJs to save
 	 * @return the saved BlobJs
 	 */
-	public Iterable<BlobJ> saveAllBlobj(final List<BlobJ> blobjs) {
+	public Set<BlobJDTO> saveAllBlobj(final List<BlobJDTO> blobjs) {
 				
-		List<BlobJ> blobjsToSave = new ArrayList<BlobJ>();
+		Set<BlobJDTO> blobjsDTO = new HashSet<BlobJDTO>();
 		
-		for(BlobJ b : blobjs) {
+		for(BlobJDTO b : blobjs) {
 			checkIfBlobJAlreadyExist(b.getName());
 			checkAndFormatBlobJData(b);
-			blobjsToSave.add(b);
+			blobjsDTO.add(b);
 		}
-				
-		Iterable<BlobJ> savedBlob = blobJRepository.saveAll(blobjsToSave);
 		
-		return savedBlob;
+		Set<BlobJ> blobjsToSave = blobJMapper.convertBlobJDTOListToBlobJEntityList(blobjsDTO);
+				
+		Set<BlobJ> savedBlob = (Set<BlobJ>) blobJRepository.saveAll(blobjsToSave);
+		
+		Set<BlobJDTO> savedBlobDTO = blobJMapper.convertBlobJEntityListToBlobJDTOList(savedBlob);
+		
+		return savedBlobDTO;
 	}
 
 	/**
@@ -363,7 +378,7 @@ public class BlobJService {
 	 * @param blobJToFormat BlobJ data to format
 	 * @return formatted BlobJ - BlobJ
 	 */
-	private BlobJ checkAndFormatBlobJData(BlobJ blobJToFormat) {
+	private BlobJDTO checkAndFormatBlobJData(BlobJDTO blobJToFormat) {
 		
 		//regex : [a-zA-Z\\-]*\\s*Blob$
 		
