@@ -35,25 +35,6 @@ public class TagController {
 	@Autowired
 	private TagService tagService;
 	
-	/**
-	 * Create a Tag and return saved Tag.
-	 * @param tag Tag to create
-	 * @param bindingResult spring framework validation interface
-	 * @return the saved Tag
-	 */
-	@PostMapping
-	public TagDTO saveTag(@RequestBody @Valid final TagDTO tag, final BindingResult bindingResult) {
-				
-		if (bindingResult.hasErrors()) {
-			String message = "Attempt to create a Tag with invalid data.";
-			LOG.warn(message);
-			throw new IllegalArgumentException(message);
-		}
-		
-		TagDTO savedTag = tagService.saveTag(tag);
-		
-		return savedTag;
-	}
 	
 	/**
 	 * Create a list of Tags and return saved Tags.
@@ -64,7 +45,7 @@ public class TagController {
 	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return the saved Tags as List
 	 */
-	@PostMapping("saveAll")
+	@PostMapping("/tags")
 	public List<TagDTO> saveAllTags(@RequestBody @Valid final List<TagDTO> tags, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
@@ -73,7 +54,7 @@ public class TagController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		List<TagDTO> savedTags = tagService.saveAllTag(tags);
+		List<TagDTO> savedTags = tagService.saveTags(tags);
 				
 		return savedTags;
 	}

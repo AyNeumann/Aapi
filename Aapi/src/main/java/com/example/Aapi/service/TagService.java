@@ -42,32 +42,13 @@ public class TagService {
 	@Autowired
 	TagMapper tagMapper;
 		
-	/**
-	 * Save the Tag in the database.
-	 * @param tag tag to save
-	 * @return savedTag - Tag
-	 */
-	public TagDTO saveTag(final TagDTO tag) {
-		
-		TagDTO tagToSave = formatTagData(tag);
-		
-		checkIfTagAlreadyExist(tag.getName());
-		
-		Tag entity = tagMapper.tagDTOToTagEntity(tagToSave);
-				
-		Tag savedTag = tagRepository.save(entity);
-		
-		TagDTO savedTagDTO = tagMapper.tagEntityToTagDTo(savedTag);
-		
-		return savedTagDTO;
-	}
 	
 	/**
 	 * Save all Tags contained in the list.
 	 * @param tag Tags to save
 	 * @return the saved Tags
 	 */
-	public List<TagDTO> saveAllTag(final List<TagDTO> tags) {
+	public List<TagDTO> saveTags(final List<TagDTO> tags) {
 		
 		List<TagDTO> tagsToSave = new ArrayList<TagDTO>();
 		List<Tag> savedTag = new ArrayList<Tag>();

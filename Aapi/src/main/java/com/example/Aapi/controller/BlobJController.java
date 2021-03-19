@@ -31,7 +31,6 @@ import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
 import com.example.Aapi.service.TagService;
 
-//TODO: Implement DTO and map struct
 //TODO: Merge save blob and save all blob end points 
 //TODO: Find a solution to replace the search by name, count etc... to have more RESTFUL compliant URLs (query strings ?)
 //TODO: Rank could be null. If so auto-generate rank
@@ -59,28 +58,9 @@ public class BlobJController {
 	@Autowired
 	private TagService tagService;
 		
-	/**
-	 * Create a BlobJ and return saved BlobJ.
-	 * @param blobj BlobJ to create
-	 * @param bindingResult spring framework validation interface
-	 * @return the saved BlobJ - BlobJ
-	 */
-	@PostMapping("/blobjs")
-	public BlobJDTO saveBlobJ(@RequestBody @Valid final BlobJDTO blobj, final BindingResult bindingResult) {
-				
-		if (bindingResult.hasErrors()) {
-			String message = "Attempt to create a Blobj with invalid data.";
-			LOG.warn(message);
-			throw new IllegalArgumentException(message);
-		}
-		
-		BlobJDTO savedBlobJ = blobJService.saveBlobj(blobj);
-
-		return savedBlobJ;
-	}
 	
 	/**
-	 * Create a list of BlobJ and return saved BloBJs.
+	 * Create a list of BlobJDTO and return saved BloBJsDTO.
 	 * The list is validated with the Valid annotation in the method parameters
 	 * and with the Validated annotation above the class.
 	 * If one of the item of the list is invalid throws ConstraintViolationException.
@@ -88,7 +68,7 @@ public class BlobJController {
 	 * @param bindingResult bindingResult spring framework validation interface
 	 * @return the saved BlobJs - Set<BlobJ>
 	 */
-	@PostMapping("/saveAll")
+	@PostMapping("/blobjs")
 	public List<BlobJDTO> saveAllBlobJs(@RequestBody @Valid final List<BlobJDTO> blobjs, final BindingResult bindingResult) {
 				
 		if (bindingResult.hasErrors()) {

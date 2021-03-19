@@ -45,29 +45,7 @@ public class BlobJService {
 	@Autowired
 	private BlobJMapper blobJMapper;
 
-	/**
-	 * Save the blobJ in the database.
-	 * 
-	 * @param blobj blobJ to save
-	 * @return savedBlobJDTO a DTO of the saved BlobJ - BlobJDTO
-	 */
-	public BlobJDTO saveBlobj(final BlobJDTO blobj) {
-
-		checkIfBlobJAlreadyExist(blobj.getName());
-
-		BlobJDTO blobJToSave = checkAndFormatBlobJData(blobj);
-
-		BlobJ entity = blobJMapper.blobJDTOtoBlobJEntity(blobJToSave);
-
-		BlobJ savedBlob = blobJRepository.save(entity);
-		LOG.info("Saved Blob Entity: " + savedBlob);
-
-		BlobJDTO savedBlobDTO = blobJMapper.blobJEntityToBlobJDTO(savedBlob);
-		LOG.info("Saved Blob DTO: " + savedBlobDTO);
-
-		return savedBlobDTO;
-	}
-
+	
 	/**
 	 * Save all BlobJ contained in the list
 	 * 
@@ -81,8 +59,8 @@ public class BlobJService {
 
 		for (BlobJDTO b : blobjs) {
 			checkIfBlobJAlreadyExist(b.getName());
-			checkAndFormatBlobJData(b);
-			blobjsDTO.add(b);
+			BlobJDTO blobJToSave = checkAndFormatBlobJData(b);
+			blobjsDTO.add(blobJToSave);
 		}
 
 		List<BlobJ> blobjsToSave = blobJMapper.convertBlobJDTOListToBlobJEntityList(blobjsDTO);
