@@ -46,15 +46,19 @@ public class TagService {
 	 * @param tag tag to save
 	 * @return savedTag - Tag
 	 */
-	public Tag saveTag(final Tag tag) {
+	public TagDTO saveTag(final TagDTO tag) {
 		
-		Tag tagToSave = formatTagData(tag);
+		TagDTO tagToSave = formatTagData(tag);
 		
 		checkIfTagAlreadyExist(tag.getName());
-				
-		Tag savedTag = tagRepository.save(tagToSave);
 		
-		return savedTag;
+		Tag entity = tagMapper.tagDTOToTagEntity(tagToSave);
+				
+		Tag savedTag = tagRepository.save(entity);
+		
+		TagDTO savedTagDTO = tagMapper.tagEntityToTagDTo(savedTag);
+		
+		return savedTagDTO;
 	}
 	
 	/**
@@ -62,19 +66,24 @@ public class TagService {
 	 * @param tag Tags to save
 	 * @return the saved Tags
 	 */
-	public Iterable<Tag> saveAllTag(final List<Tag> tags) {
+	public List<TagDTO> saveAllTag(final List<TagDTO> tags) {
 		
-		List<Tag> tagsToSave = new ArrayList<Tag>();
+		List<TagDTO> tagsToSave = new ArrayList<TagDTO>();
+		List<Tag> savedTag = new ArrayList<Tag>();
 		
-		for(Tag t : tags) {
-			Tag tagToSave = formatTagData(t);
+		for(TagDTO t : tags) {
+			TagDTO tagToSave = formatTagData(t);
 			checkIfTagAlreadyExist(t.getName());
 			tagsToSave.add(tagToSave);
 		}
 		
-		Iterable<Tag> savedTag = tagRepository.saveAll(tagsToSave);
+		List<Tag> entities = tagMapper.convertTagDTOListToTagEntityList(tagsToSave);
 		
-		return savedTag;
+		tagRepository.saveAll(entities).forEach(savedTag::add);
+		
+		List<TagDTO> savedTagDTO = tagMapper.convertTagEntityListToTagDTOList(savedTag);
+		
+		return savedTagDTO;
 	}
 	
 	/**
@@ -187,7 +196,7 @@ public class TagService {
 		return isDeleted;
 	}
 	
-	private Tag formatTagData(Tag tagToFormat) {
+	private TagDTO formatTagData(TagDTO tagToFormat) {
 		
 		if(!Character.isUpperCase(tagToFormat.getName().charAt(0))) {
 			String formattedName = StringFormatHelper.capitalize(tagToFormat.getName());

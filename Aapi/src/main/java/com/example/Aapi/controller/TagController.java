@@ -42,7 +42,7 @@ public class TagController {
 	 * @return the saved Tag
 	 */
 	@PostMapping
-	public Tag saveTag(@RequestBody @Valid final Tag tag, final BindingResult bindingResult) {
+	public TagDTO saveTag(@RequestBody @Valid final TagDTO tag, final BindingResult bindingResult) {
 				
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a Tag with invalid data.";
@@ -50,7 +50,7 @@ public class TagController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		Tag savedTag = tagService.saveTag(tag);
+		TagDTO savedTag = tagService.saveTag(tag);
 		
 		return savedTag;
 	}
@@ -62,10 +62,10 @@ public class TagController {
 	 * If one of the item of the list is invalid throws ConstraintViolationException.
  	 * @param tag Tags to save
 	 * @param bindingResult bindingResult spring framework validation interface
-	 * @return the saved Tags
+	 * @return the saved Tags as List
 	 */
 	@PostMapping("saveAll")
-	public Iterable<Tag> saveAllBlobJs(@RequestBody @Valid final List<Tag> tags, final BindingResult bindingResult) {
+	public List<TagDTO> saveAllBlobJs(@RequestBody @Valid final List<TagDTO> tags, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a Tags with an invalid list.";
@@ -73,7 +73,7 @@ public class TagController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		Iterable<Tag> savedTags = tagService.saveAllTag(tags);
+		List<TagDTO> savedTags = tagService.saveAllTag(tags);
 				
 		return savedTags;
 	}

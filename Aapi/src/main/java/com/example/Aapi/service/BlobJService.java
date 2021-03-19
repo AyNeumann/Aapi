@@ -77,6 +77,7 @@ public class BlobJService {
 	public List<BlobJDTO> saveAllBlobj(final List<BlobJDTO> blobjs) {
 
 		List<BlobJDTO> blobjsDTO = new ArrayList<BlobJDTO>();
+		List<BlobJ> savedBlobjs = new ArrayList<BlobJ>();
 
 		for (BlobJDTO b : blobjs) {
 			checkIfBlobJAlreadyExist(b.getName());
@@ -86,9 +87,9 @@ public class BlobJService {
 
 		List<BlobJ> blobjsToSave = blobJMapper.convertBlobJDTOListToBlobJEntityList(blobjsDTO);
 
-		blobJRepository.saveAll(blobjsToSave);
+		blobJRepository.saveAll(blobjsToSave).forEach(savedBlobjs::add);
 
-		List<BlobJDTO> savedBlobDTO = blobJMapper.convertBlobJEntityListToBlobJDTOList(blobjsToSave);
+		List<BlobJDTO> savedBlobDTO = blobJMapper.convertBlobJEntityListToBlobJDTOList(savedBlobjs);
 
 		return savedBlobDTO;
 	}
