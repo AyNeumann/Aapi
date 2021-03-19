@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -91,13 +92,15 @@ public class TagService {
 	 * @param pageNumber number of the page requested - 0 base count
 	 * @return required page of Tag - Page<Tag>
 	 */
-	public Page<Tag> retrieveAllTags(Integer pageNumber) {
+	public Page<TagDTO> retrieveAllTags(Integer pageNumber) {
 		
 		Pageable pageable = PageRequest.of(pageNumber, NUM_OF_TAG_PER_PAGE, Sort.by("name"));
 		
-		Page<Tag> tags = tagRepository.findAll(pageable);
+		Page<Tag> tagsEntities = tagRepository.findAll(pageable);
 		
-		return tags;
+		List<TagDTO> tags = tagMapper.convertTagEntityListToTagDTOList(tagsEntities.getContent());
+		
+		return new PageImpl<TagDTO>(tags, pageable, tagsEntities.getTotalElements());
 	}
 	
 	/**
@@ -126,7 +129,6 @@ public class TagService {
 		Set<Tag> tagsToRetrieve = tagRepository.findByNameContainingOrderByNameAsc(name);
 		
 		return tagsToRetrieve;
-		
 	}
 	
 	public Tag retrieveTagByName(final String name) {
@@ -151,9 +153,9 @@ public class TagService {
 	 * @param tag new Tag data
 	 * @return updated tag or null if tag hasn't been updated - Tag
 	 */
-	public Tag updateTag (final Tag tag) {
+	public TagDTO updateTag (final TagDTO tag) {
 		
-		Tag updatedTag = null;
+		TagDTO updatedTag = null;
 		
 		Integer tagUpdatedStatus = tagRepository.updateTag(tag.getId(), tag.getName());
 		

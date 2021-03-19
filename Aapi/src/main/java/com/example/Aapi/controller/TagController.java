@@ -65,7 +65,7 @@ public class TagController {
 	 * @return the saved Tags as List
 	 */
 	@PostMapping("saveAll")
-	public List<TagDTO> saveAllBlobJs(@RequestBody @Valid final List<TagDTO> tags, final BindingResult bindingResult) {
+	public List<TagDTO> saveAllTags(@RequestBody @Valid final List<TagDTO> tags, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to create a Tags with an invalid list.";
@@ -84,10 +84,9 @@ public class TagController {
 	 * @return required page of Tag - Page<Tag>
 	 */
 	@GetMapping
-	public Page<Tag> retrieveAllTags(@RequestParam(name="pageNumber", required = true ) final Integer pageNumber) {
+	public Page<TagDTO> retrieveAllTags(@RequestParam(name="pageNumber", required = true ) final Integer pageNumber) {
 		
 		return tagService.retrieveAllTags(pageNumber);
-		
 	}
 	
 	/**
@@ -136,7 +135,7 @@ public class TagController {
 	 * @return updated tag or null if tag hasn't been updated - Tag
 	 */
 	@PutMapping
-	public Tag updateTag (@RequestBody @Valid final Tag tag, final BindingResult bindingResult) {
+	public TagDTO updateTag (@RequestBody @Valid final TagDTO tag, final BindingResult bindingResult) {
 		
 		if (bindingResult.hasErrors()) {
 			String message = "Attempt to udpate a Tag with invalid data.";
@@ -144,9 +143,7 @@ public class TagController {
 			throw new IllegalArgumentException(message);
 		}
 		
-		Tag udpatedTag = tagService.updateTag(tag);
-		
-		return udpatedTag;
+		return tagService.updateTag(tag);
 	}
 	
 	/**
