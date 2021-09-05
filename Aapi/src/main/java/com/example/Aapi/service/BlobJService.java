@@ -53,6 +53,9 @@ public class BlobJService {
 	 * @return the a set a saved BlobJDTO
 	 */
 	public List<BlobJDTO> saveAllBlobj(final List<BlobJDTO> blobjs) {
+		// Ajouter une verification pour savoir si tout les Blob on été sauvegarder - comparaison blobjs et savedBlobDTO
+		// Renvoyé nouveau DTO indiqué nombre de Blob non sauvegardé, altéré etc...
+		LOG.debug("Enter in method saveAllBlobJ - number of entity: {}", blobjs.size());
 
 		List<BlobJDTO> blobjsDTO = new ArrayList<BlobJDTO>();
 		List<BlobJ> savedBlobjs = new ArrayList<BlobJ>();
@@ -64,11 +67,15 @@ public class BlobJService {
 		}
 
 		List<BlobJ> blobjsToSave = blobJMapper.convertBlobJDTOListToBlobJEntityList(blobjsDTO);
+		
+		LOG.debug("Number of save blobjs: {}", blobjsToSave.size());
 
 		blobJRepository.saveAll(blobjsToSave).forEach(savedBlobjs::add);
 
 		List<BlobJDTO> savedBlobDTO = blobJMapper.convertBlobJEntityListToBlobJDTOList(savedBlobjs);
-
+		
+		LOG.debug("Exit method saveAllBlobJ - number of entity: {}", savedBlobDTO.size());
+				
 		return savedBlobDTO;
 	}
 
@@ -423,7 +430,7 @@ public class BlobJService {
 		}
 
 		blobJToFormat.setName(formattedName);
-
+		
 		return blobJToFormat;
 	}
 }

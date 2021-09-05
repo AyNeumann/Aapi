@@ -31,7 +31,6 @@ import com.example.Aapi.exception.AapiEntityException;
 import com.example.Aapi.service.BlobJService;
 import com.example.Aapi.service.TagService;
 
-//TODO: Merge save blob and save all blob end points 
 //TODO: Find a solution to replace the search by name, count etc... to have more RESTFUL compliant URLs (query strings ?)
 //TODO: Rank could be null. If so auto-generate rank
 //TODO: Implement unit test
