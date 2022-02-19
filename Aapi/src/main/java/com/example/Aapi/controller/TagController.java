@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,8 +31,11 @@ public class TagController {
 	private static final Logger LOG = LogManager.getLogger();
 	
 	/** Reference to the Tag Service */
-	@Autowired
 	private TagService tagService;
+	
+	public TagController(TagService tagService) {
+		this.tagService = tagService;
+	}
 	
 	
 	/**

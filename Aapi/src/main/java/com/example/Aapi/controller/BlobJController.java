@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -50,12 +49,15 @@ public class BlobJController {
 	private static final Logger LOG = LogManager.getLogger();
 	
 	/** Reference to BlobJService. */
-	@Autowired
 	private BlobJService blobJService;
 	
 	/** Reference to the BlobJRepository */
-	@Autowired
 	private TagService tagService;
+	
+	public BlobJController(BlobJService blobJService, TagService tagService) {
+		this.blobJService = blobJService;
+		this.tagService = tagService;
+	}
 		
 	
 	/**
@@ -77,7 +79,7 @@ public class BlobJController {
 		}
 							
 		List<BlobJDTO> savedBlobJ = blobJService.saveAllBlobj(blobjs);
-				
+		
 		return savedBlobJ;
 	}
 	
@@ -88,7 +90,6 @@ public class BlobJController {
 	 */
 	@GetMapping("/blobjs")
 	public Page<BlobJDTO> retrieveAllBlobJs(@RequestParam(name="page-number", required = true ) final Integer pageNumber) {
-		
 		return blobJService.retrieveAllBlobJs(pageNumber);
 	}
 	

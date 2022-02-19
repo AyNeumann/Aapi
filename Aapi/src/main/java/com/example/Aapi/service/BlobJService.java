@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -38,12 +37,15 @@ public class BlobJService {
 	private static final int NUM_OF_BLOBJ_PER_PAGE = 50;
 
 	/** Reference to the BlobJRepository */
-	@Autowired
 	private BlobJRepository blobJRepository;
 
 	/** Reference to the BlobJMapper */
-	@Autowired
 	private BlobJMapper blobJMapper;
+	
+	public BlobJService(BlobJRepository blobJRepository, BlobJMapper blobJMapper) {
+		this.blobJRepository = blobJRepository;
+		this.blobJMapper= blobJMapper;
+	}
 
 	
 	/**
